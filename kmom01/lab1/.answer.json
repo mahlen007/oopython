@@ -1,0 +1,36 @@
+{
+    "details": "Generated for madz21 at 2023-12-28 22:55:04.",
+    "key": "98a8e1116e88e45ca2bce3630951fbf9",
+    "summary": {
+        "questions": 11,
+        "points": 13,
+        "pass": 10.0,
+        "passdistinct": 13.0
+    },
+    "points": {
+        "1.1": 1,
+        "1.2": 1,
+        "1.3": 1,
+        "1.4": 1,
+        "1.5": 1,
+        "1.6": 1,
+        "1.7": 1,
+        "1.8": 1,
+        "2.1": 1,
+        "2.2": 1,
+        "3.1": 3
+    },
+    "answers": {
+        "1.1": "My cat's name is Kvothe and has brown eyes.",
+        "1.2": 2,
+        "1.3": "My cat's name is Kvothe, has brown eyes and 2 lives left to live.",
+        "1.4": "Kvothe has 4 paws.",
+        "1.5": "Kvothe has 0 paws but cats have 4 paws.",
+        "1.6": "My cat's name is Kvothe, has brown eyes and 2 lives left to live. My cat's name is Misty, has red eyes and -1 lives left to live.",
+        "1.7": "28-06-05",
+        "1.8": 101165,
+        "2.1": 218408,
+        "2.2": "35-57-37",
+        "3.1": true
+    }
+}
