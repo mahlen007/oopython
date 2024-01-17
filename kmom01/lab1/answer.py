@@ -90,13 +90,13 @@ dbwebb.assert_equal("1.1", ANSWER, False)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
-cat1.lives_left=2
+cat1.set_lives_left(2)
 
 
 
 
 
-ANSWER = cat1.lives_left
+ANSWER = cat1.get_lives_left()
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.2", ANSWER, False)
@@ -112,10 +112,6 @@ dbwebb.assert_equal("1.2", ANSWER, False)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
-
-
-
-
 
 
 ANSWER = cat1.description()

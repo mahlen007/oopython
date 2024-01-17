@@ -10,14 +10,20 @@ class Cat():
     def __init__(self, eye_color, name):
         self.eye_color=eye_color
         self.name=name
-        self.lives_left=-1
+        self._lives_left=-1
+
+    def set_lives_left(self,lives):
+        self._lives_left=lives
+
+    def get_lives_left(self):
+        return self._lives_left
 
     def description(self):
         """
         Beskrivning av en katt.
         """
         strang=f"My cat's name is {self.name}, has {self.eye_color} eyes"
-        strang+=f" and {self.lives_left} lives left to live."
+        strang+=f" and {self.get_lives_left()} lives left to live."
         return strang
 
 class Duration():
