@@ -5,7 +5,7 @@ class Die():
     MAX_ROLL_VALUE=6
     
     def __init__(self):
-        self._value=random.randint(1,6)
+        self._value=random.randint(MIN_ROLL_VALUE,MAX_ROLL_VALUE)
     
     def get_name(self):
         argument=self._value
@@ -23,7 +23,7 @@ class Die():
         return _value
     
     def roll(self):
-        side=random.randint(1,6)
+        side=random.randint(MIN_ROLL_VALUE,MAX_ROLL_VALUE)
         self._value=side
         return side
     

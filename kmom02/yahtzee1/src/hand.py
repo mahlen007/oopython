@@ -20,3 +20,10 @@ class Hand():
             die=self.list[x]
             strang+=str(die)+", "
         return strang[:len(strang)-2]
+
+    def dice_name(self):
+        strang=""
+        for x in range(5):
+            die=self.list[x]
+            strang+=str(die.get_name())+", "
+        return strang[:len(strang)-2]
