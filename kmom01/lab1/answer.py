@@ -264,10 +264,11 @@ dbwebb.assert_equal("1.8", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 duration2=Duration(32,34,3)
-summa=Duration.duration_to_sec(duration1,duration1.display())
-summa+=Duration.duration_to_sec(duration2, duration2.display())
+#summa=Duration.duration_to_sec(duration1,duration1.display())
+#summa+=Duration.duration_to_sec(duration2, duration2.display())
+#summa=duration1+duration2
 
-ANSWER = summa
+ANSWER = duration1+duration2
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("2.1", ANSWER, False)
@@ -296,7 +297,7 @@ duration2=duration2+duration3
 ANSWER = duration2.display()
 
 # I will now test your answer - change false to true to get a hint.
-dbwebb.assert_equal("2.2", ANSWER, False)
+dbwebb.assert_equal("2.2", ANSWER, True)
 
 # --------------------------------------------------------------------------
 # Section 3. Extra assignments

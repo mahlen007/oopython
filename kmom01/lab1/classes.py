@@ -64,18 +64,26 @@ class Duration():
         """
         Adderar 2 tider.
         """
+        sum_=Duration(0,0,0)
+        
         if self.seconds+other.seconds>59:
-            self.seconds=(self.seconds+other.seconds)%60
-            self.minutes+=1
+            sum_.seconds=(self.seconds+other.seconds)%60
+            sum_.minutes+=1
         else:
-            self.seconds=self.seconds+other.seconds
-        if self.minutes+other.minutes>59:
-            self.minutes=(self.minutes+other.minutes)%60
-            self.hours+=1
+            sum_.seconds=self.seconds+other.seconds
+        if sum_.minutes+self.minutes+other.minutes>59:
+            sum_.minutes=(self.minutes+other.minutes+sum_.minutes)%60
+            sum_.hours+=1
         else:
-            self.minutes=self.minutes+other.minutes
-        self.hours=self.hours+other.hours
-        return self
+            sum_.minutes=self.minutes+other.minutes+sum_.minutes
+            sum_.hours=self.hours+other.hours+sum_.hours
+        return sum_.hours*3600+sum_.minutes*60+sum_.seconds
+
+    def __iadd__(self,other):
+        """"
+        Adderar 1 tid till en annan tid
+        """"
+        
 
     def __shorter__(self,other):
         """
