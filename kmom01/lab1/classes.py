@@ -13,9 +13,15 @@ class Cat():
         self._lives_left=-1
 
     def set_lives_left(self,lives):
+        """
+        Sätt antal liv kvar.
+        """
         self._lives_left=lives
 
     def get_lives_left(self):
+        """
+        Få fram kvarvarande liv.
+        """
         return self._lives_left
 
     def description(self):
@@ -65,7 +71,7 @@ class Duration():
         Adderar 2 tider.
         """
         sum_=Duration(0,0,0)
-        
+
         if self.seconds+other.seconds>59:
             sum_.seconds=(self.seconds+other.seconds)%60
             sum_.minutes+=1
@@ -76,16 +82,27 @@ class Duration():
             sum_.hours+=1
         else:
             sum_.minutes=self.minutes+other.minutes+sum_.minutes
-            sum_.hours=self.hours+other.hours+sum_.hours
+        sum_.hours=self.hours+other.hours+sum_.hours
         return sum_.hours*3600+sum_.minutes*60+sum_.seconds
 
     def __iadd__(self,other):
-        """"
+        """
         Adderar 1 tid till en annan tid
-        """"
-        
+        """
+        if self.seconds+other.seconds>59:
+            self.seconds=(self.seconds+other.seconds)%60
+            self.minutes+=1
+        else:
+            self.seconds=self.seconds+other.seconds
+        if self.minutes+other.minutes>59:
+            self.minutes=(self.minutes+other.minutes)%60
+            self.hours+=1
+        else:
+            self.minutes=self.minutes+other.minutes
+        self.hours=self.hours+other.hours
+        return self
 
-    def __shorter__(self,other):
+    def __lt__(self,other):
         """
         Jämför längden på två tider.
         """

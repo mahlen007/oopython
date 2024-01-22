@@ -291,13 +291,12 @@ dbwebb.assert_equal("2.1", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 duration3=Duration(3,23,34)
-duration2=duration2+duration3
-#print(duration2.display())
+duration2+=duration3
 
 ANSWER = duration2.display()
 
 # I will now test your answer - change false to true to get a hint.
-dbwebb.assert_equal("2.2", ANSWER, True)
+dbwebb.assert_equal("2.2", ANSWER, False)
 
 # --------------------------------------------------------------------------
 # Section 3. Extra assignments
@@ -318,12 +317,7 @@ dbwebb.assert_equal("2.2", ANSWER, True)
 # Write your code below and put the answer into the variable ANSWER.
 #
 
-
-
-
-
-
-ANSWER = duration1.__shorter__(duration2)
+ANSWER = duration1<duration2
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("3.1", ANSWER, False)
