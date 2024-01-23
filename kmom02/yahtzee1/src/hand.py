@@ -3,20 +3,31 @@ from src.die import Die
 class Hand():
     list=[]
 
-    def __init__(self):
+    def __init__(self,dice_values=None):
         for x in range(5):
             #die=Die()
             self.list.append(Die())
 
-    def roll(self):
+    def roll(self,my_list=None):
+        if my_list==None:
+            my_list=[0,1,2,3,4]
         for x in range(5):
             die=Die()
             #tarn=die.roll()
-            self.list.insert(x, die)
+            if x in my_list:
+                #print(x)
+                self.list[x]= die
     
     def __str__(self):
         strang=""
         for x in range(5):
             die=self.list[x]
             strang+=str(die)+", "
+        return strang[:len(strang)-2]
+
+    def dice_name(self):
+        strang=""
+        for x in range(5):
+            die=self.list[x]
+            strang+=str(die.get_name())+", "
         return strang[:len(strang)-2]
