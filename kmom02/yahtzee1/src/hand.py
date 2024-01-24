@@ -1,12 +1,12 @@
 from src.die import Die
 
 class Hand():
-    list=[]
+    dice=list[Die]
 
     def __init__(self,dice_values=None):
         for x in range(5):
             #die=Die()
-            self.list.append(Die())
+            self.dice.append(Die())
 
     def roll(self,my_list=None):
         if my_list==None:

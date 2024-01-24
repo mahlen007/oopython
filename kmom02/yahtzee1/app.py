@@ -28,7 +28,7 @@ def main():
     die1=die_list[0]
     die1=die_list[0]
     die1=die_list[0]
-    return render_template("index.html",handen=hand1,die1=die_list[0]+'.png',die2=die_list[1]+'.png',die3=die_list[2]+'.png',die4=die_list[3]+'.png',die5=die_list[4]+'.png')
+    return render_template("index.html",handen=hand1)#,die1=die_list[0]+'.png',die2=die_list[1]+'.png',die3=die_list[2]+'.png',die4=die_list[3]+'.png',die5=die_list[4]+'.png')
 
 if __name__ == "__main__":
     app.run()
