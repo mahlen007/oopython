@@ -7,12 +7,10 @@
         <p>Handen: {{handen}}</p>
         <p>
             {% for die in handen.dice%}
-            {{die}}
-            <!--<img src="static/img/{{handen.dice_values}}.png" width="56">-->
-            <!--<img src="{{ url_for('static',filename='img/}}{{die.get_name()}}{{.png') }}" width="56">-->
+                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="56">
             {% endfor %}
-            <!--<img src="static/img/{{handen.dice_values}}.png" width="56"><img src="static/img/{{die2}}" width="56"><img src="static/img/{{die3}}" width="56"><img src="static/img/{{die4}}" width="56"><img src="static/img/{{die5}}" width="56"></p>-->
     </div>
 </div>
 
 {% include 'footer.html' %}
+

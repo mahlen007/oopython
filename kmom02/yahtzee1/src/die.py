@@ -3,7 +3,7 @@ import random
 class Die():
     MIN_ROLL_VALUE = 1
     MAX_ROLL_VALUE = 6
-    _value=1
+    #_value=1
     
     def __init__(self,value=None):
         #print(Die.MAX_ROLL_VALUE)

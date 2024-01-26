@@ -1,9 +1,10 @@
 from src.die import Die
 
 class Hand():
-    dice=list[Die]
+    #dice=list[Die]
 
     def __init__(self,dice_values=None):
+        self.dice=[]
         for x in range(5):
             #die=Die()
             self.dice.append(Die())
@@ -21,7 +22,7 @@ class Hand():
     def __str__(self):
         strang=""
         for x in range(5):
-            die=self.list[x]
+            die=self.dice[x]
             strang+=str(die)+", "
         return strang[:len(strang)-2]
 
