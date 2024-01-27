@@ -1,0 +1,16 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h1>Yahtzee!!</h1>
+        <h3>Här kommer spelet</h3>
+        <p>Handen: {{handen}}</p>
+        <p>
+            {% for die in handen.dice%}
+                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="56">
+            {% endfor %}
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
