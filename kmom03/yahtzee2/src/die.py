@@ -56,7 +56,7 @@ class Die():
         """
         compare two objects or number
         """
-        if self==other:
+        if self._value == other._value:
             return True
         else:
             return False

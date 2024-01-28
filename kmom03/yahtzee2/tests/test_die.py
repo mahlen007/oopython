@@ -35,3 +35,9 @@ class TestDie(unittest.TestCase):
         """ Test die get name """
         die=Die(4) # Arrange
         self.assertEqual(die.get_name(), 'four', "Test right name with letters.")# Assert
+
+    def test_equal_ok(self):
+        """ Test die equal """
+        die=Die(4) # Arrange
+        die1=Die(4)
+        self.assertEqual(die.__eq__(die1), 4)# Assert
