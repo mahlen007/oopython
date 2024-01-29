@@ -52,6 +52,16 @@ class Die():
         self._value=side
         return side
 
+    def __eq__(self, other):
+        """
+        compare two objects or number
+        """
+        if self==other:
+            return True
+        else:
+            return False
+
+
     def __str__(self):
         """
         make string method

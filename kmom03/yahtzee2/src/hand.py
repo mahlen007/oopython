@@ -31,6 +31,11 @@ class Hand():
         for x in range(5):
             if x in my_list:
                 self.dice[x]= Die()
+    def to_list(self):
+        my_list=[]
+        for number in self.dice:
+            my_list.append(self.dice[number].get_value())
+        return my_list
 
     def __str__(self):
         """
