@@ -14,7 +14,7 @@ https://github.com/dbwebb-se/lab
 """
 
 from dbwebb import Dbwebb
-from classes import Person, Address
+from classes import Person, Address, Teacher, Student
 
 
 # pylint: disable=invalid-name
@@ -107,10 +107,10 @@ per=Person("Farseer","768244-4857",per_address)
 
 
 
-ANSWER = per.__str__()
+ANSWER = str(per)
 
 # I will now test your answer - change false to true to get a hint.
-dbwebb.assert_equal("1.2", ANSWER, True)
+dbwebb.assert_equal("1.2", ANSWER, False)
 
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # Exercise 1.3 (2 points)
@@ -136,13 +136,13 @@ dbwebb.assert_equal("1.2", ANSWER, True)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
+teacher=Teacher("James","502075-3392")
+teacher.add_course("design")
+teacher.add_course("oophp")
+teacher.add_course("webapp")
+#print(teacher)
 
-
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = str(teacher)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.3", ANSWER, False)
@@ -169,13 +169,12 @@ dbwebb.assert_equal("1.3", ANSWER, False)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
+student=Student("Kvothe","350967-5218")
+student.add_course_grade("oophp","3")
+student.add_course_grade("ramverk1","-")
+student.add_course_grade("ramverk2","1")
 
-
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = student.average_grade()
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.4", ANSWER, False)
