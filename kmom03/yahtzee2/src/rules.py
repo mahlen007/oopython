@@ -1,20 +1,46 @@
 class Rule():
+    list_of_value=[0,0,0,0,0,0]
+
     def points(self, hand):
         pass
+    
+    def count_dice(self, hand):
+        for die in hand:
+            list_of_value[die.get_value()-1]+=1
 
 class ThreeOfAKind(Rule):
     def __init__(self):
         self.name = "Three of a kind"
     
     def points(self,hand):
-        pass
+        self.count_dice(hand)
+        test=False
+        points=0
+        for x in range(6):
+            points+=list_of_value[x]*(x+1)
+            if list_of_value[x]>=3:
+                test=True
+        if test:
+            return points
+        else
+            return 0
 
 class FourOfAKind(Rule):
     def __init__(self):
         self.name = "Four of a kind"
     
     def points(self,hand):
-        pass        
+        self.count_dice(hand)
+        test=False
+        points=0
+        for x in range(6):
+            points+=list_of_value[x]*(x+1)
+            if list_of_value[x]>=4:
+                test=True
+        if test:
+            return points
+        else
+            return 0        
 
 class FullHouse(Rule):
     def __init__(self):      
@@ -33,6 +59,7 @@ class SmallStraight(Rule):
 class LargeStraight(Rule):
     def __init__(self):
         self.name = "Large straight"
+        
     
     def points(self,hand):
         pass
@@ -42,7 +69,17 @@ class Yahtzee(Rule):
         self.name = "Yahtzee"
     
     def points(self,hand):
-        pass
+        self.count_dice(hand)
+        test=False
+        points=0
+        for x in range(6):
+            points+=list_of_value[x]*(x+1)
+            if list_of_value[x]==5:
+                test=True
+        if test:
+            return 50
+        else
+            return 0  
 
 class Chance(Rule):
     def __init__(self):
