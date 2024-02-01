@@ -1,5 +1,6 @@
 class Rule():
-    pass
+    def points(self, hand):
+        pass
 
 class ThreeOfAKind(Rule):
     def __init__(self):
@@ -13,7 +14,7 @@ class FourOfAKind(Rule):
         self.name = "Four of a kind"
     
     def points(self,hand):
-        pass
+        pass        
 
 class FullHouse(Rule):
     def __init__(self):      
@@ -48,16 +49,22 @@ class Chance(Rule):
         self.name = "Chance"
     
     def points(self,hand):
-        pass
-
-
+        points=0
+        for die in hand:
+            points += die.get_value()
+        return points
+    
 class SameValueRule(Rule):
     def __init__(self, value, name):
         self.name=name
         self.value=value
     
     def points(self, hand):
-        pass
+        points=0
+        for die in hand:
+            if die.get_name() == self.name:
+                points+=die.get_value()
+        return points
 
 class Ones(SameValueRule):
     def __init__(self):
