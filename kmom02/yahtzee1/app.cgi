@@ -4,7 +4,6 @@
 """
 A CGI-script for python, including error handling.
 """
-import traceback
 
 try:
     from wsgiref.handlers import CGIHandler
@@ -13,6 +12,8 @@ try:
     CGIHandler().run(app)
 
 except Exception as e:
+    import traceback
+
     print("Content-Type: text/plain;charset=utf-8")
     print("")
     print(traceback.format_exc())
