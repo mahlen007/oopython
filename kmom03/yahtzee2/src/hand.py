@@ -31,10 +31,12 @@ class Hand():
         for x in range(5):
             if x in my_list:
                 self.dice[x]= Die()
+
     def to_list(self):
+        """ Put the numbers in a list """
         my_list=[]
         for number in self.dice:
-            my_list.append(self.dice[number].get_value())
+            my_list.append(number.get_value())
         return my_list
 
     def __str__(self):

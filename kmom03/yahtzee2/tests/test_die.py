@@ -38,6 +38,12 @@ class TestDie(unittest.TestCase):
 
     def test_equal_ok(self):
         """ Test die equal """
-        die=Die(4) # Arrange
-        die1=Die(4)
-        self.assertEqual(die.__eq__(die1), 4)# Assert
+        die1=Die(4) # Arrange
+        die2=Die(4)
+        self.assertEqual(die1, die2, "They are the same")# Assert
+
+    def test_not_equal_ok(self):
+        """ Test die equal """
+        die1=Die(3) # Arrange
+        die2=Die(4)
+        self.assertNotEqual(die1,die2, "They are the not same")# Assert

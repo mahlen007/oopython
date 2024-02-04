@@ -56,11 +56,11 @@ class Die():
         """
         compare two objects or number
         """
-        if self._value == other._value:
-            return True
-        else:
-            return False
-
+        if isinstance (other, Die):
+            return self._value == other._value
+        elif isinstance (other, int):
+            return self-other==0
+        return False
 
     def __str__(self):
         """
