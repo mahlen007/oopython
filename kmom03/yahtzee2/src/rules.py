@@ -1,5 +1,6 @@
+""" Rule module """
 from abc import ABC, abstractmethod
-from src.hand import Hand
+#from src.hand import Hand
 
 class Rule(ABC):
     """ Abstract Rule class"""
@@ -7,9 +8,10 @@ class Rule(ABC):
 
     @abstractmethod
     def points(self, hand):
-        pass
+        """ Abstract point method """
 
     def count_dice(self, hand):
+        """ Count the dice """
         self.list_of_value=[0,0,0,0,0,0]
         for die in hand.dice:
             self.list_of_value[die.get_value()-1]+=1
@@ -20,6 +22,7 @@ class ThreeOfAKind(Rule):
         self.name = "Three Of A Kind"
 
     def points(self,hand):
+        """ Count the point with 3 of a kind """
         self.count_dice(hand)
         test=False
         points=0
@@ -78,18 +81,18 @@ class SmallStraight(Rule):
         self.name = "Small Straight"
 
     def points(self,hand):
-        s_list=sorted(hand.to_list())
-        for i in range(len(s_list) - 3):
-            if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3:
-                return 30
-        return 0
-        # self.count_dice(hand)
-        # if (self.list_of_value[0]>=1 and self.list_of_value[1]>=1 and self.list_of_value[2]>=1  
-        #     and self.list_of_value[3]>=1) or (self.list_of_value[1]>=1 and self.list_of_value[2]>=1  
-        #     and self.list_of_value[3]>=1 and self.list_of_value[4]>=1) or (self.list_of_value[2]>=1  
-        #     and self.list_of_value[3]>=1 and self.list_of_value[4]>=1 and self.list_of_value[5]>=1):
-        #     return 30
+        # s_list=sorted(hand.to_list())
+        # for i in range(len(s_list) - 3):
+        #     if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3:
+        #         return 30
         # return 0
+        self.count_dice(hand)
+        if (self.list_of_value[0]>=1 and self.list_of_value[1]>=1 and self.list_of_value[2]>=1
+             and self.list_of_value[3]>=1) or (self.list_of_value[1]>=1 and self.list_of_value[2]>=1
+             and self.list_of_value[3]>=1 and self.list_of_value[4]>=1) or (self.list_of_value[2]>=1
+             and self.list_of_value[3]>=1 and self.list_of_value[4]>=1 and self.list_of_value[5]>=1):
+            return 30
+        return 0
 
 class LargeStraight(Rule):
     """ Large Straight class"""
@@ -99,13 +102,10 @@ class LargeStraight(Rule):
     def points(self, hand):
         s_list=sorted(hand.to_list())
         for i in range(len(s_list) - 4):
-            if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3 == s_list[i + 4] - 4:
+            if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == \
+                s_list[i + 3] - 3 == s_list[i + 4] - 4:
                 return 40
         return 0
-        # self.count_dice(hand)
-        # if (self.list_of_value[1]==1 and self.list_of_value[2]==1 and self.list_of_value[3]==1 and self.list_of_value[4]==1) and (self.list_of_value[0]==1 or self.list_of_value[5]==1):
-        #     return 40
-        # return 0
 
 class Yahtzee(Rule):
     """ Yahtzee class"""
@@ -117,7 +117,7 @@ class Yahtzee(Rule):
         for x in range(6):
             if self.list_of_value[x]==5:
                 return 50
-        return 0  
+        return 0
 
 class Chance(Rule):
     """ Chance class"""

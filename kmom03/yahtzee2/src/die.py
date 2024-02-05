@@ -59,7 +59,7 @@ class Die():
         if isinstance (other, Die):
             return self._value == other._value
         if isinstance (other, int):
-            return self-other==0
+            return self._value-other==0
         return False
 
     def __str__(self):

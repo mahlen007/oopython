@@ -1,3 +1,4 @@
+""" Scoreboard module """
 from src.hand import Hand
 from src.rules import Chance, Yahtzee, FullHouse
 
@@ -20,7 +21,7 @@ class Scoreboard:
         }
 
 
-    def __init__(self,name):
+    def __init__(self,name,point):
         self._total_points=0
 
     def get_total_points(self):
@@ -53,6 +54,7 @@ class Scoreboard:
     @classmethod
     def from_dict(cls,points=None):
         """ Get from dict """
+        
         sb=cls(points)
         #for index, value in points:
         #    sb = cls(index, value)

@@ -5,7 +5,7 @@ from src.rules import Ones, Twos, Chance, Yahtzee, LargeStraight, \
 from src.scoreboard import Scoreboard
 
 hand1=Hand([6,6,6,6,6])
-print(hand1.to_list())
+#print(hand1.to_list())
 
 o=Ones()
 t=Twos()
@@ -15,8 +15,8 @@ ls=LargeStraight()
 ss=SmallStraight()
 fh=FullHouse()
 fok=FourOfAKind()
-print(fok.points(Hand([6,6,6,6,6])))
-o = Scoreboard.from_dict({
+print(ss.points(Hand([1,2,3,4,2])))
+a_dict={
         "Ones": -1,
         "Twos": -1,
         "Threes": -1,
@@ -30,7 +30,8 @@ o = Scoreboard.from_dict({
         "Large Straight": -1,
         "Yahtzee": -1,
         "Chance": -1,
-        })
+        }
+o = Scoreboard.from_dict(a_dict)
 print(o)
 
 #print(hand1)
