@@ -22,12 +22,11 @@ class Scoreboard:
 
     def __init__(self,name):
         self._total_points=0
-        
 
     def get_total_points(self):
         """ Get total points """
-        positive_sum = sum(value for value in points.values() if isinstance(value, (int)) and value > 0)
-        return positive_sum
+        pos_sum = sum(value for value in points.values() if isinstance(value, (int)) and value > 0)
+        return pos_sum
         # point=0
         # for value in points.values():
         #     print ("** "+value)

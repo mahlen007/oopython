@@ -1,5 +1,7 @@
+""" Tester """
 from src.hand import Hand
-from src.rules import Rule, Ones, Twos, Chance, Yahtzee, LargeStraight, SmallStraight, FullHouse,FourOfAKind
+from src.rules import Ones, Twos, Chance, Yahtzee, LargeStraight, \
+        SmallStraight, FullHouse,FourOfAKind
 from src.scoreboard import Scoreboard
 
 hand1=Hand([6,6,6,6,6])

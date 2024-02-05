@@ -58,7 +58,7 @@ class Die():
         """
         if isinstance (other, Die):
             return self._value == other._value
-        elif isinstance (other, int):
+        if isinstance (other, int):
             return self-other==0
         return False
 

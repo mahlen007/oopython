@@ -4,7 +4,6 @@ Class for testing the Hand class
 import unittest
 import random
 
-from src.die import Die
 from src.hand import Hand
 
 class TestHand(unittest.TestCase):

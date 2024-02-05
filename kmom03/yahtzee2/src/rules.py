@@ -57,13 +57,12 @@ class FullHouse(Rule):
         self.name = "Full House"
 
     def points(self,hand):
-        sorted_list=sorted(hand.to_list())
-        if (sorted_list[0] == sorted_list[1] == sorted_list[2] and sorted_list[3] == sorted_list[4]) or \
-            (sorted_list[0] == sorted_list[1] and sorted_list[2] == sorted_list[3] == sorted_list[4]):
+        s_list=sorted(hand.to_list())
+        if (s_list[0] == s_list[1] == s_list[2] and s_list[3] == s_list[4]) or \
+            (s_list[0] == s_list[1] and s_list[2] == s_list[3] == s_list[4]):
             return 25
         return 0
-        
-        
+
         # self.count_dice(hand)
         # at_least_two=0
         # for x in range(6):
@@ -77,11 +76,11 @@ class SmallStraight(Rule):
     """ Small Straight class"""
     def __init__(self):
         self.name = "Small Straight"
-    
+
     def points(self,hand):
-        sorted_list=sorted(hand.to_list())
-        for i in range(len(sorted_list) - 3):
-            if sorted_list[i] == sorted_list[i + 1] - 1 == sorted_list[i + 2] - 2 == sorted_list[i + 3] - 3:
+        s_list=sorted(hand.to_list())
+        for i in range(len(s_list) - 3):
+            if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3:
                 return 30
         return 0
         # self.count_dice(hand)
@@ -98,9 +97,9 @@ class LargeStraight(Rule):
         self.name = "Large Straight"
 
     def points(self, hand):
-        sorted_list=sorted(hand.to_list())
-        for i in range(len(sorted_list) - 4):
-            if sorted_list[i] == sorted_list[i + 1] - 1 == sorted_list[i + 2] - 2 == sorted_list[i + 3] - 3 == sorted_list[i + 4] - 4:
+        s_list=sorted(hand.to_list())
+        for i in range(len(s_list) - 4):
+            if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3 == s_list[i + 4] - 4:
                 return 40
         return 0
         # self.count_dice(hand)
