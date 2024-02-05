@@ -17,7 +17,7 @@ fh=FullHouse()
 fok=FourOfAKind()
 print(ss.points(Hand([1,2,3,4,2])))
 a_dict={
-        "Ones": -1,
+        "Ones": 3,
         "Twos": -1,
         "Threes": -1,
         "Fours": -1,
@@ -32,6 +32,8 @@ a_dict={
         "Chance": -1,
         }
 o = Scoreboard.from_dict(a_dict)
-print(o)
-
+print(o.ones)
+o.add_points("Full House",[5,5,5,2,2])
+o.from_dict()
+print(o.fullhouse)
 #print(hand1)
