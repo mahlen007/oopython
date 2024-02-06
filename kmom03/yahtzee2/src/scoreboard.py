@@ -1,10 +1,21 @@
 """ Scoreboard module """
 from src.hand import Hand
-from src.rules import Chance, Yahtzee, FullHouse
+from src.rules import Ones, Twos, Threes, Fours, Fives, Sixes, \
+    ThreeOfAKind, FourOfAKind, FullHouse, SmallStraight, LargeStraight, \
+    Yahtzee, Chance
+    
 
 class Scoreboard:
     """ Scoreboard class """
-    points = {
+    
+
+
+
+    def __init__(self, points):
+        self.points=points
+        self._total_points=0
+
+        """ self.points = {
             "Ones": -1,
             "Twos": -1,
             "Threes": -1,
@@ -17,29 +28,42 @@ class Scoreboard:
             "Small Straight": -1,
             "Large Straight": -1,
             "Yahtzee": -1,
-            "Chance": -1,
-        }
+            "Chance": -1
+        } """
 
 
-    def __init__(self,my_dict):
-        self._total_points=0
-        self.ones=my_dict["Ones"]
-        self.twos=my_dict["Twos"]
-        self.threes=my_dict["Threes"]
-        self.fours=my_dict["Fours"]
-        self.fives=my_dict["Fives"]
-        self.sixes=my_dict["Sixes"]
-        self.threeofakind=my_dict["Three Of A Kind"]
-        self.fourofakind=my_dict["Four Of A Kind"]
-        self.fullhouse=my_dict["Full House"]
-        self.smallstraight=my_dict["Small Straight"]
-        self.largestraight=my_dict["Large Straight"]
-        self.yahtzee=my_dict["Yahtzee"]
-        self.chance=my_dict["Chance"]
+        # self.Ones=my_dict["Ones"]
+        # self.Twos=my_dict["Twos"]
+        # self.Threes=my_dict["Threes"]
+        # self.Fours=my_dict["Fours"]
+        # self.Fives=my_dict["Fives"]
+        # self.Sixes=my_dict["Sixes"]
+        # self.ThreeOfAKind=my_dict["Three Of A Kind"]
+        # self.FourOfaKind=my_dict["Four Of A Kind"]
+        # self.FullHouse=my_dict["Full House"]
+        # self.SmallStraight=my_dict["Small Straight"]
+        # self.LargeStraight=my_dict["Large Straight"]
+        # self.Yahtzee=my_dict["Yahtzee"]
+        # self.Chance=my_dict["Chance"]
+        self.dict_class = {
+            "Ones": Ones,
+            "Twos": Twos,
+            "Threes": Threes,
+            "Fours": Fours,
+            "Fives": Fives,
+            "Sixes": Sixes,
+            "Three Of A Kind": ThreeOfAKind,
+            "Four Of A Kind": FourOfAKind,
+            "Full House": FullHouse,
+            "Small Straight": SmallStraight,
+            "Large Straight": LargeStraight,
+            "Yahtzee": Yahtzee,
+            "Chance": Chance
+    }
 
     def get_total_points(self):
         """ Get total points """
-        pos_sum = sum(value for value in points.values() if isinstance(value, (int)) and value > 0)
+        pos_sum = sum(value for value in self.points.values() if isinstance(value, (int)) and value > 0)
         return pos_sum
         # point=0
         # for value in points.values():
@@ -50,17 +74,20 @@ class Scoreboard:
 
     def add_points(self, rule_name, hand):
         """ Add points """
-        if rule_name == "Full House":
-            obj=FullHouse()
-            self.fullhouse=obj.points(Hand(hand))
-            #self.points[rule_name]=obj.points(Hand(hand))
+        #if rule_name == "Full House":
+        obj=self.dict_class[rule_name]
+        hand1=Hand(hand)
+        self.points[rule_name]=obj.points(hand1)
+        #self.points[rule_name]=obj.points(Hand(hand))
 
     def get_points(self, rule_name):
         """ Get points """
-        print(rule_name)
-        return self.points[rule_name]
+        #print(rule_name)
+        #obj=self.dict_class[rule_name].value()
+        obj=self.points[rule_name]
+        return obj
 
-    def finished():
+    def finished(self):
         """ Check if finished """
         if -1 in self.points.values():
             return False

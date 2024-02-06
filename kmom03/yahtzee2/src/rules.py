@@ -113,10 +113,14 @@ class Yahtzee(Rule):
         self.name = "Yahtzee"
 
     def points(self,hand):
-        self.count_dice(hand)
-        for x in range(6):
-            if self.list_of_value[x]==5:
-                return 50
+        s_list=sorted(hand.to_list())
+        #self.count_dice(hand)
+        #for x in range(6):
+        #    if self.list_of_value[x]==5:
+        #        return 50
+        #return 0
+        if s_list[0]==s_list[4]:
+            return 50
         return 0
 
 class Chance(Rule):
