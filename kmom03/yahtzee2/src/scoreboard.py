@@ -63,7 +63,12 @@ class Scoreboard:
 
     def get_total_points(self):
         """ Get total points """
-        pos_sum = sum(value for value in self.points.values() if isinstance(value, (int)) and value > 0)
+        #pos_sum = sum(value for value in self.points.values() if isinstance(value, (int)) and value > 0)
+        pos_sum=0
+        for value in self.points.values():
+            if value>0:
+                pos_sum+=value
+        print (pos_sum)
         return pos_sum
         # point=0
         # for value in points.values():
@@ -74,18 +79,29 @@ class Scoreboard:
 
     def add_points(self, rule_name, hand):
         """ Add points """
+        print(type(hand))
         #if rule_name == "Full House":
-        obj=self.dict_class[rule_name]
-        hand1=Hand(hand)
-        self.points[rule_name]=obj.points(hand1)
-        #self.points[rule_name]=obj.points(Hand(hand))
+        my_obj=self.dict_class[rule_name]
+        print(my_obj)
+        #hand1=Hand(hand)
+        #print(type(hand1))
+        if self.points[rule_name]==-1:
+            self.points[rule_name]=my_obj.points(hand)
+        else:
+            raise ValueError("Redan vald!")
+        """ if isinstance(hand,(list)):
+            hand1=hand.Hand(hand)
+            self.points[rule_name]=my_obj.points(hand1)
+        else:
+            self.points[rule_name]=my_obj.points(Hand(hand)) """
+            #self.points[rule_name]=obj.points(Hand(hand))
 
     def get_points(self, rule_name):
         """ Get points """
         #print(rule_name)
         #obj=self.dict_class[rule_name].value()
-        obj=self.points[rule_name]
-        return obj
+        my_obj=self.points[rule_name]
+        return my_obj
 
     def finished(self):
         """ Check if finished """

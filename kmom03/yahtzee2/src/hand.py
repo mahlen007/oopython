@@ -19,8 +19,13 @@ class Hand():
                 self.dice.append(Die())
         else:
             for x in range(5):
+                #print(type(dice_values))
+                #print("*** "+str(x)+" : "+str(dice_values[x]))
                 self.dice.append(Die(dice_values[x]))
+                #print((self.dice))
 
+    # def __getitem__(self, index):
+    #     return self.dice[index]
 
     def roll(self,my_list=None):
         """

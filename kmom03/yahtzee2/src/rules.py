@@ -21,7 +21,7 @@ class ThreeOfAKind(Rule):
     def __init__(self):
         self.name = "Three Of A Kind"
 
-    def points(self,hand):
+    def points(self, hand):
         """ Count the point with 3 of a kind """
         self.count_dice(hand)
         test=False
@@ -39,7 +39,7 @@ class FourOfAKind(Rule):
     def __init__(self):
         self.name = "Four Of A Kind"
 
-    def points(self,hand):
+    def points(self, hand):
         self.count_dice(hand)
         #my_list=hand.to_list().sort()
         sorted_list=sorted(hand.to_list())
@@ -59,7 +59,7 @@ class FullHouse(Rule):
     def __init__(self):
         self.name = "Full House"
 
-    def points(self,hand):
+    def points(self, hand):
         s_list=sorted(hand.to_list())
         if (s_list[0] == s_list[1] == s_list[2] and s_list[3] == s_list[4]) or \
             (s_list[0] == s_list[1] and s_list[2] == s_list[3] == s_list[4]):
@@ -80,7 +80,7 @@ class SmallStraight(Rule):
     def __init__(self):
         self.name = "Small Straight"
 
-    def points(self,hand):
+    def points(self, hand):
         # s_list=sorted(hand.to_list())
         # for i in range(len(s_list) - 3):
         #     if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3:
@@ -112,13 +112,8 @@ class Yahtzee(Rule):
     def __init__(self):
         self.name = "Yahtzee"
 
-    def points(self,hand):
+    def points(self, hand):
         s_list=sorted(hand.to_list())
-        #self.count_dice(hand)
-        #for x in range(6):
-        #    if self.list_of_value[x]==5:
-        #        return 50
-        #return 0
         if s_list[0]==s_list[4]:
             return 50
         return 0

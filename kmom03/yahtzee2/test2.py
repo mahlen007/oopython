@@ -1,4 +1,5 @@
 """ Tester """
+from src.die import Die
 from src.hand import Hand
 from src.rules import Ones, Twos, Chance, Yahtzee, LargeStraight, \
         SmallStraight, FullHouse,FourOfAKind
@@ -15,7 +16,7 @@ ls=LargeStraight()
 ss=SmallStraight()
 fh=FullHouse()
 fok=FourOfAKind()
-print(ss.points(Hand([1,2,3,4,2])))
+#print(ss.points(Hand([1,2,3,4,2])))
 a_dict={
         "Ones": 3,
         "Twos": -1,
@@ -32,8 +33,10 @@ a_dict={
         "Chance": -1,
         }
 o = Scoreboard.from_dict(a_dict)
-print(o.ones)
-o.add_points("Full House",[5,5,5,2,2])
-o.from_dict()
-print(o.fullhouse)
+h2 = Hand()
+
+print(h2)
+h = Hand([6, 6, 6, 6, 6])
+o.add_points("Yahtzee",h)
+
 #print(hand1)
