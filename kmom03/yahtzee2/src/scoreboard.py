@@ -1,15 +1,12 @@
 """ Scoreboard module """
-from src.hand import Hand
+#from src.hand import Hand
 from src.rules import Ones, Twos, Threes, Fours, Fives, Sixes, \
     ThreeOfAKind, FourOfAKind, FullHouse, SmallStraight, LargeStraight, \
     Yahtzee, Chance
-    
+
 
 class Scoreboard:
     """ Scoreboard class """
-    
-
-
 
     def __init__(self, points):
         self.points=points
@@ -63,43 +60,26 @@ class Scoreboard:
 
     def get_total_points(self):
         """ Get total points """
-        #pos_sum = sum(value for value in self.points.values() if isinstance(value, (int)) and value > 0)
         pos_sum=0
         for value in self.points.values():
             if value>0:
                 pos_sum+=value
-        print (pos_sum)
         return pos_sum
-        # point=0
-        # for value in points.values():
-        #     print ("** "+value)
-        #     if value!=-1:
-        #         point+=value
-        # return point
 
     def add_points(self, rule_name, hand):
         """ Add points """
-        print(type(hand))
-        #if rule_name == "Full House":
         my_obj=self.dict_class[rule_name]
-        print(my_obj)
-        #hand1=Hand(hand)
-        #print(type(hand1))
+        #print("*********")
+        #print(type(hand))
+        #print(hand)
+        #print("*********")
         if self.points[rule_name]==-1:
-            self.points[rule_name]=my_obj.points(hand)
+            self.points[rule_name]=my_obj.points(hand,hand)
         else:
             raise ValueError("Redan vald!")
-        """ if isinstance(hand,(list)):
-            hand1=hand.Hand(hand)
-            self.points[rule_name]=my_obj.points(hand1)
-        else:
-            self.points[rule_name]=my_obj.points(Hand(hand)) """
-            #self.points[rule_name]=obj.points(Hand(hand))
 
     def get_points(self, rule_name):
         """ Get points """
-        #print(rule_name)
-        #obj=self.dict_class[rule_name].value()
         my_obj=self.points[rule_name]
         return my_obj
 
@@ -129,6 +109,4 @@ class Scoreboard:
             "Chance": -1,
         }
         sb=cls(points)
-        #for index, value in points:
-        #    sb = cls(index, value)
         return sb

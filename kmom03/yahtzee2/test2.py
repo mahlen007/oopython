@@ -1,5 +1,4 @@
 """ Tester """
-from src.die import Die
 from src.hand import Hand
 from src.rules import Ones, Twos, Chance, Yahtzee, LargeStraight, \
         SmallStraight, FullHouse,FourOfAKind

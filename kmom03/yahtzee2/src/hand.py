@@ -27,14 +27,14 @@ class Hand():
     # def __getitem__(self, index):
     #     return self.dice[index]
 
-    def roll(self,my_list=None):
+    def roll(self,indexes=None):
         """
         roll the dice method
         """
-        if my_list is None:
-            my_list=[0,1,2,3,4]
+        if indexes is None:
+            indexes=[0,1,2,3,4]
         for x in range(5):
-            if x in my_list:
+            if x in indexes:
                 self.dice[x]= Die()
 
     def to_list(self):

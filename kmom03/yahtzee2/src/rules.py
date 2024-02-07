@@ -81,18 +81,17 @@ class SmallStraight(Rule):
         self.name = "Small Straight"
 
     def points(self, hand):
-        # s_list=sorted(hand.to_list())
-        # for i in range(len(s_list) - 3):
-        #     if s_list[i] == s_list[i + 1] - 1 == s_list[i + 2] - 2 == s_list[i + 3] - 3:
-        #         return 30
-        # return 0
         self.count_dice(hand)
-        if (self.list_of_value[0]>=1 and self.list_of_value[1]>=1 and self.list_of_value[2]>=1
-             and self.list_of_value[3]>=1) or (self.list_of_value[1]>=1 and self.list_of_value[2]>=1
-             and self.list_of_value[3]>=1 and self.list_of_value[4]>=1) or (self.list_of_value[2]>=1
-             and self.list_of_value[3]>=1 and self.list_of_value[4]>=1 and self.list_of_value[5]>=1):
+        if (self.four(self.list_of_value,0) or self.four(self.list_of_value,1)
+        or self.four(self.list_of_value,2)):
             return 30
         return 0
+
+    def four(self, my_list,x):
+        """ Check if 4 dice are in row """
+        if my_list[x]>=1 and my_list[x+1]>=1 and my_list[x+2]>=1 and my_list[x+3]>=1:
+            return True
+        return False
 
 class LargeStraight(Rule):
     """ Large Straight class"""
