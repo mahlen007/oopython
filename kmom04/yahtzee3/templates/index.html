@@ -1,0 +1,26 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="jumbotron">
+        <h1>Welcome to Yahtzee!</h1>
+    </div>
+    <div class="containers">
+        <div class="containerss">
+
+        
+            {% for die in handen.dice %}
+                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="56">
+            {% endfor %}
+
+        </div>
+        <div class="containerss">
+            {% for row in sb.points %}
+                {{row.rule_name}}
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
