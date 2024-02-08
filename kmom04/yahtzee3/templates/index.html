@@ -5,7 +5,7 @@
         <h1>Welcome to Yahtzee!</h1>
     </div>
     <div class="containers">
-        <div class="containerss">
+        <div class="containerss" id="first">
 
         
             {% for die in handen.dice %}
@@ -13,11 +13,29 @@
             {% endfor %}
 
         </div>
-        <div class="containerss">
-            {% for row in sb.points %}
-                {{row.rule_name}}
-            {% endfor %}
-
+        <div class="containerss" id="second">
+            <table class="scoreTable">
+                <thead class="scorehead">
+                    <tr>
+                        <th class="scoreentry">Choose</th>
+                        <th class="scoreentry">Worth</th>
+                        <th class="scoreentry">Rule</th>
+                        <th class="scoreentry">Already scored</th>
+                    </tr>
+    
+                
+                </thead>
+                <fieldset>
+                {% for key, value in sb.points.items() %}
+                <tr class="scoreentry">
+                    <td class="scoreentry"><input type="radio" id="1" name="1" value="huey"/></td>
+                    <td class="scoreentry">??</td>
+                    <td class="scoreentry">{{key}}</td><td>{{value}}</td></tr>
+                </tr>
+                {% endfor %}
+            </fieldset>
+                
+            </table>
         </div>
     </div>
 </div>

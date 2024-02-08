@@ -22,8 +22,23 @@ def about():
 def main():
     """ Main route """
     hand1=Hand()
-    sb1=Scoreboard()
-    return render_template("index.html",handen=hand1)
+    empty_dict = {
+        "Ones": -1,
+        "Twos": -1,
+        "Threes": -1,
+        "Fours": -1,
+        "Fives": -1,
+        "Sixes": -1,
+        "Three Of A Kind": -1,
+        "Four Of A Kind": -1,
+        "Full House": -1,
+        "Small Straight": -1,
+        "Large Straight": -1,
+        "Yahtzee": -1,
+        "Chance": -1,
+    }
+    sb1=Scoreboard.from_dict(empty_dict)
+    return render_template("index.html",handen=hand1,sb=sb1)
 
 if __name__ == "__main__":
     app.run()
