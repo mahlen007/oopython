@@ -6,13 +6,21 @@
     </div>
     <div class="containers">
         <div class="containerss" id="first">
-
-        
+            <form role="form" method="POST" action="url_for{{'reroll dic'}}"></form>
+            <fieldset>
+            <table><tr>
+                
             {% for die in handen.dice %}
-                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="56">
-            {% endfor %}
-
-        </div>
+                <td>
+                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="70">
+                <input type="checkbox" id="{{die.get_name()}}" name="{{die.get_name()}}" class="checkbox-inline">
+            </td>
+                {% endfor %}
+            </tr><tr><td><button type="submit" id="reroll" class="btn btn-default">Reroll</button></td></tr>
+        </table>
+        </fieldset>
+    </form>   
+    </div>
         <div class="containerss" id="second">
             <table class="scoreTable">
                 <thead class="scorehead">
@@ -30,9 +38,19 @@
                 <tr class="scoreentry">
                     <td class="scoreentry"><input type="radio" id="1" name="1" value="huey"/></td>
                     <td class="scoreentry">??</td>
-                    <td class="scoreentry">{{key}}</td><td>{{value}}</td></tr>
+                    <td class="scoreentry">{{key}}</td>
+                    <td>
+                        {% if value==-1 %}
+                            -
+                        {% else %}
+                            {{value}}
+                        {% endif %}
+                        </td></tr>
                 </tr>
                 {% endfor %}
+                <tr><td><button type="submit" id="score" class="btn btn-default">Score</button></td></tr>
+            
+            
             </fieldset>
                 
             </table>

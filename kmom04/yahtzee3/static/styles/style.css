@@ -9,11 +9,11 @@ body {
 }
 #first {
     width: 400px;
-    border: 1px solid red;
+    border: 0px solid red;
 }
 #second {
     width: 500px;
-    border: 1px solid green;
+    border: 0px solid green;
 }
 
 
@@ -77,4 +77,5 @@ table {
     width: 5em;
     border: 2px;
     border-color: black;
+    text-align: center;
 }

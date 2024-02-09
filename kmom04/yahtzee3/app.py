@@ -3,8 +3,10 @@
 My first Flask app
 """
 # Importera relevanta moduler
+import os
+import re
 import traceback
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session, redirect, url_for
 from src.scoreboard import Scoreboard
 from src.hand import Hand
 
@@ -39,6 +41,17 @@ def main():
     }
     sb1=Scoreboard.from_dict(empty_dict)
     return render_template("index.html",handen=hand1,sb=sb1)
+
+@app.route("/roll_dice")
+def roll_dice():
+    print(request.form)
+
+@app.route("/reset")
+def reset():
+    """ Route for reset session """
+    _ = [session.pop(key) for key in list(session.keys())]
+
+    return redirect(url_for('main'))
 
 if __name__ == "__main__":
     app.run()
