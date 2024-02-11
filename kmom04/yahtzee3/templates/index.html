@@ -6,22 +6,25 @@
     </div>
     <div class="containers">
         <div class="containerss" id="first">
-            <form role="form" method="POST" action="url_for{{'reroll dic'}}"></form>
+            <form role="form" method="POST" action="{{url_for('roll_dice')}}">
             <fieldset>
-            <table><tr>
-                
+            <table><tr><td colspan="5"><span id="end_roll" name="end_roll">{{end_rolls}}</span></td></tr><tr>
+             
             {% for die in handen.dice %}
+
                 <td>
                 <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="70">
-                <input type="checkbox" id="{{die.get_name()}}" name="{{die.get_name()}}" class="checkbox-inline">
+                <input type="checkbox" id="die{{loop.index}}" name="die{{loop.index}}" class="checkbox-inline">
             </td>
+               
                 {% endfor %}
-            </tr><tr><td><button type="submit" id="reroll" class="btn btn-default">Reroll</button></td></tr>
+            </tr><tr><td colspan="5"><button type="submit" id="reroll" class="btn">Reroll</button></td></tr>
         </table>
         </fieldset>
     </form>   
     </div>
         <div class="containerss" id="second">
+            Total score: 
             <table class="scoreTable">
                 <thead class="scorehead">
                     <tr>
@@ -33,11 +36,18 @@
     
                 
                 </thead>
+                <tbody>
                 <fieldset>
                 {% for key, value in sb.points.items() %}
                 <tr class="scoreentry">
-                    <td class="scoreentry"><input type="radio" id="1" name="1" value="huey"/></td>
-                    <td class="scoreentry">??</td>
+                    <td class="scoreentry"><input type="radio" id="row{{loop.index}}" name="row" value="{{key}}"
+                        {% if value==-1 %}
+                            
+                        {% else %}
+                            disabled
+                        {% endif %}
+                        /></td>
+                    <td class="scoreentry">{{sb.check_points(key,handen)}}</td>
                     <td class="scoreentry">{{key}}</td>
                     <td>
                         {% if value==-1 %}
@@ -48,11 +58,11 @@
                         </td></tr>
                 </tr>
                 {% endfor %}
-                <tr><td><button type="submit" id="score" class="btn btn-default">Score</button></td></tr>
+                <tr><td colspan="4"><button type="submit" id="score" class="btn">Score</button></td></tr>
             
             
             </fieldset>
-                
+        </tbody>
             </table>
         </div>
     </div>

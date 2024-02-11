@@ -11,37 +11,6 @@ class Scoreboard:
     def __init__(self, points):
         self.points=points
         self._total_points=0
-
-        """ self.points = {
-            "Ones": -1,
-            "Twos": -1,
-            "Threes": -1,
-            "Fours": -1,
-            "Fives": -1,
-            "Sixes": -1,
-            "Three Of A Kind": -1,
-            "Four Of A Kind": -1,
-            "Full House": -1,
-            "Small Straight": -1,
-            "Large Straight": -1,
-            "Yahtzee": -1,
-            "Chance": -1
-        } """
-
-
-        # self.Ones=my_dict["Ones"]
-        # self.Twos=my_dict["Twos"]
-        # self.Threes=my_dict["Threes"]
-        # self.Fours=my_dict["Fours"]
-        # self.Fives=my_dict["Fives"]
-        # self.Sixes=my_dict["Sixes"]
-        # self.ThreeOfAKind=my_dict["Three Of A Kind"]
-        # self.FourOfaKind=my_dict["Four Of A Kind"]
-        # self.FullHouse=my_dict["Full House"]
-        # self.SmallStraight=my_dict["Small Straight"]
-        # self.LargeStraight=my_dict["Large Straight"]
-        # self.Yahtzee=my_dict["Yahtzee"]
-        # self.Chance=my_dict["Chance"]
         self.dict_class = {
             "Ones": Ones,
             "Twos": Twos,
@@ -57,6 +26,9 @@ class Scoreboard:
             "Yahtzee": Yahtzee,
             "Chance": Chance
     }
+
+    def to_dict(self):
+        return self.points
 
     def get_total_points(self):
         """ Get total points """
@@ -77,6 +49,16 @@ class Scoreboard:
             self.points[rule_name]=my_obj.points(hand,hand)
         else:
             raise ValueError("Redan vald!")
+
+    def check_points(self, rule_name, hand):
+        """ Add points """
+        my_obj=self.dict_class[rule_name]
+        print(my_obj)
+        #print("*********")
+        #print(type(hand))
+        #print(hand)
+        #print("*********")
+        return 5
 
     def get_points(self, rule_name):
         """ Get points """
