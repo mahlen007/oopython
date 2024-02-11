@@ -24,7 +24,8 @@
     </form>   
     </div>
         <div class="containerss" id="second">
-            Total score: 
+            <form role="form" method="POST" action="{{url_for('score')}}">
+            <B>Total score: {{sb.get_total_points()}}</B>
             <table class="scoreTable">
                 <thead class="scorehead">
                     <tr>
@@ -62,6 +63,7 @@
             
             
             </fieldset>
+        </form>
         </tbody>
             </table>
         </div>

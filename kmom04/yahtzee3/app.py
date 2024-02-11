@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-My first Flask app
+Yahtzee app
 """
 # Importera relevanta moduler
 import os
@@ -25,9 +25,7 @@ def about():
 @app.route("/")
 def main():
     """ Main route """
-    
-    
-    if not 'started' in session:
+    if 'started' not in session:
         empty_dict = {
             "Ones": -1,
             "Twos": -1,
@@ -54,32 +52,13 @@ def main():
         session["no_more_rolls"]=''
         print(end_rolls1)
         return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
-    else:
-        empty_dict=session["score"]
-        no_rolls=session["number"]
-        h1=Hand(session["dice"])
-        sb1=Scoreboard.from_dict(session["score"])
-        end_rolls1=session.get('no_more_rolls')
-        print(end_rolls1)
-        return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
-    #sb1=Scoreboard.from_dict(empty_dict)
-    #dice=[]
-    """if request.form["die1"]=='on':
-        dice.append(0)
-    if request.form["die2"]=='on':
-        dice.append(1)
-    if request.form["die3"]=='on':
-        dice.append(2)
-    if request.form["die4"]=='on':
-        dice.append(3)
-    if request.form["die5"]=='on':
-        dice.append(4)"""
-    #empty_dict=Scoreboard.to_dict()
-    """ sb1=Scoreboard.from_dict(empty_dict)
-    session["number"]=no_rolls
-    session["score"]=sb1.to_dict()
-    
-    return render_template("index.html",handen=h1,sb=sb1) """
+    empty_dict=session["score"]
+    no_rolls=session["number"]
+    h1=Hand(session["dice"])
+    sb1=Scoreboard.from_dict(session["score"])
+    end_rolls1=session.get('no_more_rolls')
+    #print(end_rolls1)
+    return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
 
 @app.route("/roll_dice", methods=["POST"])
 def roll_dice():
@@ -88,7 +67,7 @@ def roll_dice():
     no_rolls=session['number']
     no_rolls+=1
     if no_rolls>=3:
-        print("Too many tries!")
+        #print("Too many tries!")
         session['no_more_rolls']='No more rolls!'
     else:
         h1=Hand(session["dice"])
@@ -104,17 +83,31 @@ def roll_dice():
         if request.form.get('die5')=='on':
             dice_choosen.append(4)
         h1.roll(dice_choosen)
-        print(dice_choosen)
-        sb1=Scoreboard.from_dict(session["score"])
+        #print(dice_choosen)
+        #sb1=Scoreboard.from_dict(session["score"])
         session['dice']=h1.to_list()
         session['number']=no_rolls
         session['no_more_rolls']=''
     return redirect(url_for('main'))
 
+@app.route("/score",methods=["POST"])
+def score():
+    """ Route for lock in score """
+    h1=Hand(session["dice"])
+    sb1=Scoreboard.from_dict(session["score"])
+    sb1.add_points(request.form.get("row"),h1)
+    session["score"]=sb1.to_dict()
+    session["number"]=1
+    h1.roll()
+    session["dice"]=h1.to_list()
+    session['no_more_rolls']=''
+    return redirect(url_for('main'))
+
+
 @app.route("/reset")
 def reset():
     """ Route for reset session """
-    empty_dict = {
+    """ empty_dict = {
         "Ones": -1,
         "Twos": -1,
         "Threes": -1,
@@ -128,8 +121,8 @@ def reset():
         "Large Straight": -1,
         "Yahtzee": -1,
         "Chance": -1,
-    }
-    sb1=Scoreboard.from_dict(empty_dict)
+    } """
+    #sb1=Scoreboard.from_dict(empty_dict)
     _ = [session.pop(key) for key in list(session.keys())]
 
     return redirect(url_for('main'))
