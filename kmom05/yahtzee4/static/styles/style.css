@@ -1,0 +1,85 @@
+body {
+    padding-top: 4em;
+    padding-bottom: 2em;
+}
+
+#wrapper {
+    width: 500px;
+    border: 1px solid black;
+}
+#first {
+    width: 400px;
+    border: 0px solid red;
+}
+#second {
+    width: 500px;
+    border: 0px solid green;
+}
+
+
+h3 {
+    text-align: center
+}
+
+.scoreTable {
+    border: 2px solid #000;
+    width: 500px;
+}
+
+.scoreheader {
+    border: 2px solid #000;
+    font-style: oblique;
+    padding: 5px;
+    text-align: center;
+}
+
+.scoreentry {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 5px
+}
+
+.containerss {
+    float: left;
+    padding-left: 2em
+}
+
+.checkbox-inline {
+    padding: 2.6em;
+}
+
+.reroll {
+    color: #c50c0c;
+    max-width: 500px
+}
+
+.endgame {
+    color: green;
+    max-width: 500px
+}
+
+
+
+.die {
+    width: 50px;
+}
+
+footer {
+    margin-top: 4em;
+}
+
+.btn {
+    margin-top: 1em;
+    min-width: 100%;
+    max-width: 35em;
+    background-color: #04AA6D;
+    
+}
+
+
+table {
+    width: 5em;
+    border: 2px;
+    border-color: black;
+    text-align: center;
+}

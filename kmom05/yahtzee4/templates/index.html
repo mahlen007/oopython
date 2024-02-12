@@ -1,0 +1,86 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="jumbotron">
+        <h1>Welcome to Yahtzee!</h1>
+    </div>
+    <div class="containers">
+        <div class="containerss" id="first">
+            <form role="form" method="POST" action="{{url_for('roll_dice')}}">
+            <fieldset>
+            <table><tr><td colspan="5"><span id="end_roll" name="end_roll">{{end_rolls}}</span></td></tr><tr>
+             
+            {% for die in handen.dice %}
+
+                <td>
+                <img src="{{ url_for('static',filename='img/'+die.get_name()+'.png') }}" width="70">
+                <input type="checkbox" id="die{{loop.index}}" name="die{{loop.index}}" class="checkbox-inline">
+            </td>
+               
+                {% endfor %}
+            </tr><tr><td colspan="5"><button type="submit" id="reroll" class="btn"
+                {% if sb.finished() %}
+                disabled    
+            {% else %}
+                
+            {% endif %}
+                >Reroll</button></td></tr>
+        </table>
+        </fieldset>
+    </form>   
+    </div>
+        <div class="containerss" id="second">
+            <form role="form" method="POST" action="{{url_for('score')}}">
+            <B>Total score: {{sb.get_total_points()}}</B>
+            <table class="scoreTable">
+                <thead class="scorehead">
+                    <tr>
+                        <th class="scoreentry">Choose</th>
+                        <th class="scoreentry">Worth</th>
+                        <th class="scoreentry">Rule</th>
+                        <th class="scoreentry">Already scored</th>
+                    </tr>
+    
+                
+                </thead>
+                <tbody>
+                <fieldset>
+                {% for key, value in sb.points.items() %}
+                <tr class="scoreentry">
+                    <td class="scoreentry"><input type="radio" id="row{{loop.index}}" name="row" value="{{key}}"
+                        {% if value==-1 %}
+                            
+                        {% else %}
+                            disabled
+                        {% endif %}
+                        /></td>
+                    <td class="scoreentry">{{sb.check_points(key,handen)}}</td>
+                    <td class="scoreentry">{{key}}</td>
+                    <td>
+                        {% if value==-1 %}
+                            -
+                        {% else %}
+                            {{value}}
+                        {% endif %}
+                        </td></tr>
+                </tr>
+                {% endfor %}
+                <tr><td colspan="4"><button type="submit" id="score" class="btn"
+                    {% if sb.finished() %}
+                        disabled    
+                    {% else %}
+                        
+                    {% endif %}
+                    >Score</button></td></tr>
+            
+            
+            </fieldset>
+        </form>
+        </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
