@@ -30,6 +30,15 @@ class TestScoreboard(unittest.TestCase):
     def test_add_points_ok(self):
         """ Test that add_points works """
         sb=Scoreboard.from_dict(self.empty_dict) # Arrange
-        hand1=Hand()
+        hand1=Hand([1,1,1,1,4])
         sb.add_points("Four Of A Kind",hand1)
-        self.assertEqual(sb.get_total_points(), 0, "Total score should be 1") # Assert
+        self.assertEqual(sb.get_total_points(), 8, "Total score should be 8") # Assert
+
+    def test_add_points_lift_exeption_ok(self):
+        """ Test that add_points lift exeption """
+        sb=Scoreboard.from_dict(self.empty_dict) # Arrange
+        hand1=Hand([1,1,1,1,4])
+        sb.add_points("Four Of A Kind",hand1)
+        hand1=Hand([4,4,4,1,4])
+        with self.assertRaises(ValueError):# Assert
+            sb.add_points("Four Of A Kind",hand1)

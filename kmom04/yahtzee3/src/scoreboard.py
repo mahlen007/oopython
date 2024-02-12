@@ -49,12 +49,12 @@ class Scoreboard:
         if self.points[rule_name]==-1:
             self.points[rule_name]=my_obj.points(hand)
         else:
-            raise ValueError("Redan vald!")
+            raise ValueError("Already used!")
 
     def check_points(self, rule_name, hand):
         """ Add points """
         my_obj=self.dict_class[rule_name]
-        print(my_obj)
+        #print(my_obj)
         #print("*********")
         #print(type(hand))
         #print(hand)

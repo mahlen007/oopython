@@ -18,7 +18,13 @@
             </td>
                
                 {% endfor %}
-            </tr><tr><td colspan="5"><button type="submit" id="reroll" class="btn">Reroll</button></td></tr>
+            </tr><tr><td colspan="5"><button type="submit" id="reroll" class="btn"
+                {% if sb.finished() %}
+                disabled    
+            {% else %}
+                
+            {% endif %}
+                >Reroll</button></td></tr>
         </table>
         </fieldset>
     </form>   
@@ -59,7 +65,13 @@
                         </td></tr>
                 </tr>
                 {% endfor %}
-                <tr><td colspan="4"><button type="submit" id="score" class="btn">Score</button></td></tr>
+                <tr><td colspan="4"><button type="submit" id="score" class="btn"
+                    {% if sb.finished() %}
+                        disabled    
+                    {% else %}
+                        
+                    {% endif %}
+                    >Score</button></td></tr>
             
             
             </fieldset>

@@ -19,7 +19,6 @@ class GuessGame:
         if guesses:
             for value, attempt, is_correct in guesses:
                 self.guesses.append(Guess(value, attempt, is_correct))
-        # self.guesses = [Guess(v, a, c) for v, a, c in guesses] if guesses is not None else [] # denna raden gör samma sak som de fyra raderna ovanför
         self.guess_attempts = len(self.guesses)
 
     def make_guess(self, guess_value):
@@ -47,4 +46,4 @@ class GuessGame:
         # for g in self.guesses:
         #     new_list.append((g.value, g.attempt, g.correct))
         # return new_list
-        return [(g.value, g.attempt, g.correct) for g in self.guesses] # denna raden gör samma sak som de fyra raderna ovanför.
+        return [(g.value, g.attempt, g.correct) for g in self.guesses]

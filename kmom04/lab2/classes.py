@@ -35,7 +35,7 @@ class Teacher(Person):
     """ Teacher class """
     def __init__(self,name,ssn,address=""):
         self.courses=[]
-        super(Teacher, self).__init__(name,ssn,address)
+        super().__init__(name,ssn,address)
 
     def add_course(self,course):
         """ Add course """
@@ -54,7 +54,7 @@ class Student(Person):
     """ Student class """
     def __init__(self,name,ssn,address=""):
         self.courses_grades=[]
-        super(Student, self).__init__(name,ssn,address)
+        super().__init__(name,ssn,address)
 
     def add_course_grade(self,course,grade):
         """ Add course grade """
@@ -64,7 +64,8 @@ class Student(Person):
         """ Calculate average grade """
         my_sum=0
         number=0
-        for x in range(len(self.courses_grades)):
+        #for x in range(len(self.courses_grades)):
+        for x, _ in enumerate (self.courses_grades):
             if self.courses_grades[x][1]!="-":
                 my_sum+=int(self.courses_grades[x][1])
                 number+=1
@@ -72,7 +73,7 @@ class Student(Person):
 
     def __str__(self):
         if self.address=="":
-            return ("Name: "+self.name+" SSN: "+self._ssn+" Courses with grades: " +  
+            return ("Name: "+self.name+" SSN: "+self._ssn+" Courses with grades: " +
             str(self.courses_grades))
-        return ("Name: "+self.name+" SSN: "+self._ssn+self.address+" Courses: " +  
+        return ("Name: "+self.name+" SSN: "+self._ssn+self.address+" Courses: " +
         str(self.courses_grades))

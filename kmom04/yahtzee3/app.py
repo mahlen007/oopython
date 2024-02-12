@@ -50,24 +50,20 @@ def main():
         session["score"]=sb1.to_dict()
         end_rolls1=''
         session["no_more_rolls"]=''
-        print(end_rolls1)
         return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
     empty_dict=session["score"]
     no_rolls=session["number"]
     h1=Hand(session["dice"])
     sb1=Scoreboard.from_dict(session["score"])
     end_rolls1=session.get('no_more_rolls')
-    #print(end_rolls1)
     return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
 
 @app.route("/roll_dice", methods=["POST"])
 def roll_dice():
     """ Route for roll the dice """
-    #print(request.form)
     no_rolls=session['number']
     no_rolls+=1
     if no_rolls>=3:
-        #print("Too many tries!")
         session['no_more_rolls']='No more rolls!'
     else:
         h1=Hand(session["dice"])
@@ -83,8 +79,6 @@ def roll_dice():
         if request.form.get('die5')=='on':
             dice_choosen.append(4)
         h1.roll(dice_choosen)
-        #print(dice_choosen)
-        #sb1=Scoreboard.from_dict(session["score"])
         session['dice']=h1.to_list()
         session['number']=no_rolls
         session['no_more_rolls']=''
@@ -98,30 +92,18 @@ def score():
     sb1.add_points(request.form.get("row"),h1)
     session["score"]=sb1.to_dict()
     session["number"]=1
-    h1.roll()
-    session["dice"]=h1.to_list()
-    session['no_more_rolls']=''
+    if sb1.finished() is False:
+        h1.roll()
+        session["dice"]=h1.to_list()
+        session['no_more_rolls']=''
+    else:
+        session['no_more_rolls']='Game over! You got: '+str(sb1.get_total_points())
     return redirect(url_for('main'))
 
 
 @app.route("/reset")
 def reset():
     """ Route for reset session """
-    """ empty_dict = {
-        "Ones": -1,
-        "Twos": -1,
-        "Threes": -1,
-        "Fours": -1,
-        "Fives": -1,
-        "Sixes": -1,
-        "Three Of A Kind": -1,
-        "Four Of A Kind": -1,
-        "Full House": -1,
-        "Small Straight": -1,
-        "Large Straight": -1,
-        "Yahtzee": -1,
-        "Chance": -1,
-    } """
     #sb1=Scoreboard.from_dict(empty_dict)
     _ = [session.pop(key) for key in list(session.keys())]
 

@@ -42,8 +42,8 @@ class FourOfAKind(Rule):
     def points(self, hand):
         self.count_dice(hand)
         #my_list=hand.to_list().sort()
-        sorted_list=sorted(hand.to_list())
-        print(sorted_list)
+        #sorted_list=sorted(hand.to_list())
+        #print(sorted_list)
         test=False
         point=0
         for x in range(6):
