@@ -100,6 +100,9 @@ def score():
         session['no_more_rolls']='Game over! You got: '+str(sb1.get_total_points())
     return redirect(url_for('main'))
 
+@app.route("/add_score",methods=["POST"])
+def add_score():
+    """ Route for add score to Scoreboard """
 
 @app.route("/reset")
 def reset():

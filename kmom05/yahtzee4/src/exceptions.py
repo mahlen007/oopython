@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+"""
+Class for Errors
+"""
 class Error(Exception):
    """User defined class for custom exceptions"""
    pass
