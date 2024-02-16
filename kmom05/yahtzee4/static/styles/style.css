@@ -26,6 +26,15 @@ h3 {
     width: 500px;
 }
 
+.scoreTable_ex {
+    border: 2px solid hsl(0, 0%, 0%);
+    width:50%; 
+    margin-left:25%; 
+    margin-right:25%;
+    align-self: center;
+
+}
+
 .scoreheader {
     border: 2px solid #000;
     font-style: oblique;
@@ -37,6 +46,10 @@ h3 {
     border: 1px solid #000;
     text-align: center;
     padding: 5px
+}
+
+.full {
+    width: 100%
 }
 
 .containerss {
@@ -82,4 +95,12 @@ table {
     border: 2px;
     border-color: black;
     text-align: center;
+}
+
+.table_ex {
+    width: 100%
+}
+
+.td_bg {
+    background-color: #04AA6D;
 }

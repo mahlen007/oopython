@@ -92,17 +92,21 @@ def score():
     sb1.add_points(request.form.get("row"),h1)
     session["score"]=sb1.to_dict()
     session["number"]=1
-    if sb1.finished() is False:
+    if sb1.finished() is True:
         h1.roll()
         session["dice"]=h1.to_list()
         session['no_more_rolls']=''
     else:
         session['no_more_rolls']='Game over! You got: '+str(sb1.get_total_points())
+        return redirect(url_for('add_score'))    
     return redirect(url_for('main'))
 
-@app.route("/add_score",methods=["POST"])
+@app.route("/add_score")#,methods=["POST"])
 def add_score():
     """ Route for add score to Scoreboard """
+    sb1=Scoreboard.from_dict(session["score"])
+    return render_template("add_result.html",sb=sb1)
+
 
 @app.route("/reset")
 def reset():
