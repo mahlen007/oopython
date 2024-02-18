@@ -9,6 +9,7 @@ import traceback
 from flask import Flask, render_template, request, session, redirect, url_for
 from src.scoreboard import Scoreboard
 from src.hand import Hand
+from src.leaderboard import Leaderboard
 
 app = Flask(__name__)
 app.secret_key = re.sub(r"[^a-z\d]", "", os.path.realpath(__file__))
@@ -92,13 +93,13 @@ def score():
     sb1.add_points(request.form.get("row"),h1)
     session["score"]=sb1.to_dict()
     session["number"]=1
-    if sb1.finished() is True:
+    if sb1.finished() is False:
         h1.roll()
         session["dice"]=h1.to_list()
         session['no_more_rolls']=''
     else:
         session['no_more_rolls']='Game over! You got: '+str(sb1.get_total_points())
-        return redirect(url_for('add_score'))    
+        return redirect(url_for('add_score'))
     return redirect(url_for('main'))
 
 @app.route("/add_score")#,methods=["POST"])
@@ -107,11 +108,39 @@ def add_score():
     sb1=Scoreboard.from_dict(session["score"])
     return render_template("add_result.html",sb=sb1)
 
+@app.route("/add_result",methods=["POST"])
+def add_result():
+    """ Route for add result to Scoreboard """
+    sb1=Scoreboard.from_dict(session["score"])
+    score_=sb1.get_total_points()
+    name=request.form.get("fname")
+    lb1=Leaderboard()
+    lb1.load("score.json")
+    lb1.add_entry(name,score_)
+    lb1.save("score.json")
+    return render_template("leaderboard.html",lb=lb1)
+
+@app.route("/show_leaderboard",methods=["POST"])
+def show_leaderboard():
+    """ Route for add score to Scoreboard """
+    lb1=Leaderboard()
+    lb1.load("score.json")
+    return render_template("leaderboard.html",lb=lb1)
+
+@app.route("/delete_score",methods=["POST"])
+def delete_score():
+    """ Route for delete score """
+    lb1=Leaderboard()
+    lb1.load("score.json")
+    #print(request.form.get("row"))
+    lb1.remove_entry(int(request.form.get("row")))
+    lb1.save("score.json")
+    return render_template("leaderboard.html",lb=lb1)
+
 
 @app.route("/reset")
 def reset():
     """ Route for reset session """
-    #sb1=Scoreboard.from_dict(empty_dict)
     _ = [session.pop(key) for key in list(session.keys())]
 
     return redirect(url_for('main'))

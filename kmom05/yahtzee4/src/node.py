@@ -9,6 +9,7 @@ class Node:
         self.next = _next
 
     def has_next(self):
+        """ Checking if node has next """
         return self.next is not None
 
 if __name__ == "__main__":

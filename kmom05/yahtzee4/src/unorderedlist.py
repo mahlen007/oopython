@@ -2,9 +2,9 @@
 """
 Class for Unorderedlist
 """
-from node import Node
-from exceptions import MissingIndex
-from exceptions import MissingValue
+from src.node import Node
+from src.errors import MissingIndex
+from src.errors import MissingValue
 
 class UnorderedList():
     """ Class Unordered List """
@@ -28,27 +28,27 @@ class UnorderedList():
         current=self._head
         ind=0
         if current is None:
-            return -1
+            raise MissingIndex
         while current.has_next() and ind<index:
             ind+=1
             current = current.next
         if ind==index:
             return current.value
-        return -1
+        raise MissingIndex
 
     def set(self,index,data):
         """ set method """
         current=self._head
         ind=0
         if current is None:
-            return -1
+            raise MissingIndex
         while current.has_next() and ind<index:
             ind+=1
             current = current.next
         if ind==index:
             current.value=data
             return
-        return -1
+        raise MissingIndex
 
     def index_of(self, data):
         """ index of method """
@@ -58,10 +58,12 @@ class UnorderedList():
             return ind
         while current.has_next():
             ind+=1
+            current = current.next
+            print(current.value)
             if current.value==data:
                 return ind
-            current = current.next
-        return -1    
+            print(current.value)
+        raise MissingValue
 
     def remove(self, data):
         """ remove method """
@@ -69,17 +71,17 @@ class UnorderedList():
         if current.value==data:
             self._head=current.next
             return
-        
+
         while current is not None:
             if current.value==data:
                 break
             previous=current
             current=current.next
             #print(str(previous.value)+"  "+str(current.value))
-        
+
         if current is None:
-            return -1
-        
+            raise MissingValue
+
         previous.next=current.next
         return
 
@@ -98,7 +100,7 @@ class UnorderedList():
     #         previous=current.next
     #         print(previous.value)
     #         return
-    #     return -1   
+    #     return -1
 
     def size(self):
         """ size method """
@@ -110,7 +112,7 @@ class UnorderedList():
         while current.has_next():
             ind+=1
             current = current.next
-        return ind    
+        return ind
 
     def print_list(self):
         """ print method """
