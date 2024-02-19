@@ -75,12 +75,18 @@ dbwebb.assert_equal("1.1", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 list1=[2, 5, 3, 13, 9, 1, 11, 8, 7]
-def look_max(number)
-    if max<list1[]
+def look_max(number):
+    if number==1:
+        return list1[number-1]
+    max=look_max(number-1)
+    #print(max)
+    if max>list1[number-1]:
+        return max
+    else: 
+        return list1[number-1]
 
 
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = look_max(8)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.2", ANSWER, False)
@@ -97,13 +103,34 @@ dbwebb.assert_equal("1.2", ANSWER, False)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
+list1=[2, 5, 3, 13, 9, 1, 11, 8, 7]
 
+def find_element2(list, to_find,index):
+    if not list:
+        return -1
+    if list[0]==to_find:
+        return index
+    index+=1
+    return find_element2(list[1:],to_find,index)
 
+def find_element(list, to_find):
+    if not list:
+        return False
+    if list[0]==to_find:
+        return True
+    return find_element(list[1:],to_find)
 
+def print_content(list):
+    if len(list)==0:
+        return
+    print(list[0])
+    print_content(list[1:])
 
+#print(look_index(8,1))
+#print_content(list1)
+#print(find_element2(list1,20,-1))
 
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = find_element2(list1,1,0)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.3", ANSWER, False)
@@ -119,12 +146,7 @@ dbwebb.assert_equal("1.3", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 
-
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = find_element2(list1,20,0)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.4", ANSWER, False)
@@ -140,12 +162,12 @@ dbwebb.assert_equal("1.4", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 
+def power(base,exp):
+    if exp==1:
+        return base
+    return base*power(base,exp-1)
 
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = power(4,3)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.5", ANSWER, False)
@@ -161,12 +183,13 @@ dbwebb.assert_equal("1.5", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 
+def backward(word,newword):
+    if len(word)==0:
+        return newword
+    newword=newword+word[len(word)-1]
+    return backward(word[:len(word)-1],newword)
 
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = backward("Frontwards","")
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.6", ANSWER, False)
@@ -183,13 +206,17 @@ dbwebb.assert_equal("1.6", ANSWER, False)
 #
 # Write your code below and put the answer into the variable ANSWER.
 #
+def lcm(one,two,value):
+    if value==one*two:
+        return value
+    if value%one==0 and value%two==0:
+        return value
+    value+=1
+    return lcm(one,two,value)
 
+#print(lcm(10,5,1))
 
-
-
-
-
-ANSWER = "Replace this text with the variable holding the answer."
+ANSWER = lcm(10,5,1)
 
 # I will now test your answer - change false to true to get a hint.
 dbwebb.assert_equal("1.7", ANSWER, False)
