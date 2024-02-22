@@ -32,7 +32,7 @@ class Queue:
         """ Return a list from the queue """
         my_list=[]
         for item in self._items:
-            my_list.append(item.dequeue())
+            my_list.append(self.dequeue())
         return my_list
 
     def from_list(self,my_list):
