@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from src.scoreboard import Scoreboard
 from src.hand import Hand
 from src.leaderboard import Leaderboard
+from src.game import Game
 
 app = Flask(__name__)
 app.secret_key = re.sub(r"[^a-z\d]", "", os.path.realpath(__file__))
@@ -27,6 +28,7 @@ def about():
 def main():
     """ Main route """
     if 'started' not in session:
+        
         empty_dict = {
             "Ones": -1,
             "Twos": -1,
@@ -51,13 +53,49 @@ def main():
         session["score"]=sb1.to_dict()
         end_rolls1=''
         session["no_more_rolls"]=''
-        return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
+        return render_template("start.html")
+        #return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
+    game=Game()
+    player_tuple=game.players.dequeue()
+    playerinfo=player_tuple[0]
     empty_dict=session["score"]
     no_rolls=session["number"]
     h1=Hand(session["dice"])
     sb1=Scoreboard.from_dict(session["score"])
     end_rolls1=session.get('no_more_rolls')
-    return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1)
+    return render_template("index.html",handen=h1,sb=sb1,end_rolls=end_rolls1,player=playerinfo)
+
+@app.route("/setup",methods=["POST"])
+def setup():
+    """ Route for set up game with several players """
+    empty_dict = {
+        "Ones": -1,
+        "Twos": -1,
+        "Threes": -1,
+        "Fours": -1,
+        "Fives": -1,
+        "Sixes": -1,
+        "Three Of A Kind": -1,
+        "Four Of A Kind": -1,
+        "Full House": -1,
+        "Small Straight": -1,
+        "Large Straight": -1,
+        "Yahtzee": -1,
+        "Chance": -1,
+    }
+
+    #print(request.form.get("players"))
+    no_players=int(request.form.get("players"))
+
+    #session["no_players"]=request.form.get("players")
+    game=Game()
+    rolls=0
+    for x in range(no_players):
+        sb=Scoreboard.from_dict(empty_dict)
+        game.players.enqueue((x,sb,rolls))
+    session["players"]=game.players.to_list()
+    return redirect(url_for('main'))
+
 
 @app.route("/roll_dice", methods=["POST"])
 def roll_dice():
@@ -90,16 +128,21 @@ def score():
     """ Route for lock in score """
     h1=Hand(session["dice"])
     sb1=Scoreboard.from_dict(session["score"])
+    game=Game()
+    game.players.from_list(session["players"])
     sb1.add_points(request.form.get("row"),h1)
     session["score"]=sb1.to_dict()
     session["number"]=1
-    if sb1.finished() is False:
+    if sb1.finished() is True: ### Ändras vid testning
+        #game.players.from_list(session["players"])
         h1.roll()
         session["dice"]=h1.to_list()
         session['no_more_rolls']=''
     else:
         session['no_more_rolls']='Game over! You got: '+str(sb1.get_total_points())
-        return redirect(url_for('add_score'))
+        if game.players.is_empty:
+            return redirect(url_for('add_score'))
+        return redirect(url_for('main'))
     return redirect(url_for('main'))
 
 @app.route("/add_score")#,methods=["POST"])
@@ -110,7 +153,7 @@ def add_score():
 
 @app.route("/add_result",methods=["POST"])
 def add_result():
-    """ Route for add result to Scoreboard """
+    """ Route for add result to Leaderboard """
     sb1=Scoreboard.from_dict(session["score"])
     score_=sb1.get_total_points()
     name=request.form.get("fname")
@@ -120,7 +163,7 @@ def add_result():
     lb1.save("score.json")
     return render_template("leaderboard.html",lb=lb1)
 
-@app.route("/show_leaderboard",methods=["POST"])
+@app.route("/show_leaderboard")#,methods=["POST"])
 def show_leaderboard():
     """ Route for add score to Scoreboard """
     lb1=Leaderboard()

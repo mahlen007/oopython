@@ -30,6 +30,7 @@
                 <ul class="nav navbar-nav">
                     <li {%- if request.path == "/" %} class="active" {% endif %}><a href="{{ url_for('main') }}">Hem</a></li>
                     <li {%- if request.path == "/reset" %} class="active" {% endif %}><a href="{{ url_for('reset') }}">Reset</a></li>
+                    <li {%- if request.path == "/show_leaderboard" %} class="active" {% endif %}><a href="{{ url_for('show_leaderboard') }}">Leaderboard</a></li>
                     <li {%- if request.path == "/about" %} class="active" {% endif %}><a href="{{ url_for('about') }}">Om</a></li>
                 </ul>
             </div>

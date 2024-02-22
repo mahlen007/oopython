@@ -52,10 +52,11 @@ dbwebb.ready_to_begin()
 # Write your code below and put the answer into the variable ANSWER.
 #
 def rec_sum(tal):
-    sum=tal
+    """ Recursiv sum """
+    sum_=tal
     if tal>16:
-        sum=sum+rec_sum(tal-1)
-    return sum
+        sum_=sum_+rec_sum(tal-1)
+    return sum_
 
 #print(rec_sum(30))
 ANSWER = rec_sum(30)
@@ -76,14 +77,14 @@ dbwebb.assert_equal("1.1", ANSWER, False)
 #
 list1=[2, 5, 3, 13, 9, 1, 11, 8, 7]
 def look_max(number):
+    """Look for max number """
     if number==1:
         return list1[number-1]
-    max=look_max(number-1)
+    max_=look_max(number-1)
     #print(max)
-    if max>list1[number-1]:
-        return max
-    else: 
-        return list1[number-1]
+    if max_>list1[number-1]:
+        return max_
+    return list1[number-1]
 
 
 ANSWER = look_max(8)
@@ -105,26 +106,29 @@ dbwebb.assert_equal("1.2", ANSWER, False)
 #
 list1=[2, 5, 3, 13, 9, 1, 11, 8, 7]
 
-def find_element2(list, to_find,index):
-    if not list:
+def find_element2(list_, to_find,index):
+    """ Find element in list """
+    if not list_:
         return -1
-    if list[0]==to_find:
+    if list_[0]==to_find:
         return index
     index+=1
-    return find_element2(list[1:],to_find,index)
+    return find_element2(list_[1:],to_find,index)
 
-def find_element(list, to_find):
-    if not list:
+def find_element(list_, to_find):
+    """ Find element in list """
+    if not list_:
         return False
-    if list[0]==to_find:
+    if list_[0]==to_find:
         return True
-    return find_element(list[1:],to_find)
+    return find_element(list_[1:],to_find)
 
-def print_content(list):
-    if len(list)==0:
+def print_content(list_):
+    """ Print content from list """
+    if len(list_)==0:
         return
-    print(list[0])
-    print_content(list[1:])
+    print(list_[0])
+    print_content(list_[1:])
 
 #print(look_index(8,1))
 #print_content(list1)
@@ -163,6 +167,7 @@ dbwebb.assert_equal("1.4", ANSWER, False)
 #
 
 def power(base,exp):
+    """ Calculate the power """
     if exp==1:
         return base
     return base*power(base,exp-1)
@@ -184,6 +189,7 @@ dbwebb.assert_equal("1.5", ANSWER, False)
 #
 
 def backward(word,newword):
+    """ Make a word backwards """
     if len(word)==0:
         return newword
     newword=newword+word[len(word)-1]
@@ -207,6 +213,7 @@ dbwebb.assert_equal("1.6", ANSWER, False)
 # Write your code below and put the answer into the variable ANSWER.
 #
 def lcm(one,two,value):
+    """ Least Common Multiplier """
     if value==one*two:
         return value
     if value%one==0 and value%two==0:
