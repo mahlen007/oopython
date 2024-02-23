@@ -28,7 +28,7 @@ def about():
 def main():
     """ Main route """
     if 'started' not in session:
-        
+        """"
         empty_dict = {
             "Ones": -1,
             "Twos": -1,
@@ -43,12 +43,12 @@ def main():
             "Large Straight": -1,
             "Yahtzee": -1,
             "Chance": -1,
-        }
+        }"""
         no_rolls=0
         session["started"]='yes'
         h1=Hand()
         session["dice"]=h1.to_list()
-        sb1=Scoreboard.from_dict(empty_dict)
+        #sb1=Scoreboard.from_dict(empty_dict)
         session["number"]=no_rolls
         session["score"]=sb1.to_dict()
         end_rolls1=''
@@ -98,7 +98,14 @@ def setup():
         sb=Scoreboard.from_dict(empty_dict)
         game.players.enqueue((int(x),sb.to_dict()))
         print(game.players.size())      
+    
+    #game.players.from_list(session["players"])
+    player_tuple=game.players.dequeue()
+    player_turn=player_tuple[0]
+    session["player_turn"]=player_turn
+    session["score"]=player_tuple[1]
     session["players"]=game.players.to_list()
+    
     print(game.players.size())
     return redirect(url_for('main'))
 
@@ -136,6 +143,7 @@ def score():
 def add_score():
     """ Route for add score to Scoreboard """
     sb1=Scoreboard.from_dict(session["score"])
+    
     return render_template("add_result.html",sb=sb1)
 
 @app.route("/add_result",methods=["POST"])
