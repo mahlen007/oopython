@@ -7,7 +7,7 @@ from src.unorderedlist import UnorderedList
 from src.errors import MissingIndex
 from src.errors import MissingValue
 
-class TestUnorderlisy(unittest.TestCase):
+class TestUnorderlist(unittest.TestCase):
     """ Test class"""
     def setUp(self):
         pass

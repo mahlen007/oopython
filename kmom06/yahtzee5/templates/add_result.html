@@ -5,58 +5,21 @@
         <div class="w-100">
             <form role="form" method="POST" action="{{url_for('add_result')}}">
             <fieldset>
-            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>Congrats! You finished yahtzee! Your final score is {{sb.get_total_points()}}!</h3></td></tr>
-                <tr><td colspan="5" height="25px">  <label for="fname">Enter name to save the score:</label>
+            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>Congrats! You finished yahtzee! </h3></td></tr>
+                <tr><td colspan="5" class="td_bg"><h3>The winner was player {{gm.winner()}} got the score {{gm.highest_score()}}!</h3></td></tr>
+                <tr><td colspan="5" class=""><H4>The player score was:</H4><br></td></tr>
+                    <tr><th colspan="2" class="scoreentry">Player</th><th colspan="2" class="scoreentry">Score</th></tr>
+                {% for key, value in gm.round_score%}
+                    <tr><td colspan="2" class="scoreentry">{{key}}</td><td colspan="2" class="scoreentry">  {{value}} </td></tr>
+                    {% endfor %}
+                <tr><td>&nbsp;</td></tr>
+                    <tr><td colspan="5" height="25px">  <label for="fname">Enter name to save the score:</label>
                     <input type="text" id="fname" name="fname"></td>
                          </tr><tr><td colspan="5"><button type="submit" id="savescore" class="btn">Save score</button></td></tr>
         </table>
         </fieldset>
     </form>   
     </div>
-        <div class="w-100">
-            <form role="form" method="POST" action="{{url_for('score')}}">
-            <H4><center>Rules - Total score: {{sb.get_total_points()}}</center></H4>
-            <table class="scoreTable_ex">
-                <thead class="scorehead">
-                    <tr>
-                        <th class="scoreentry">Choose</th>
-                        <th class="scoreentry">Worth</th>
-                        <th class="scoreentry">Rule</th>
-                        <th class="scoreentry">Already scored</th>
-                    </tr>
-    
-                
-                </thead>
-                <tbody>
-                <fieldset>
-                {% for key, value in sb.points.items() %}
-                <tr class="scoreentry">
-                    <td class="scoreentry"><input type="radio" id="row{{loop.index}}" name="row" value="{{key}}"
-                        {% if value==-1 %}
-                            
-                        {% else %}
-                            disabled
-                        {% endif %}
-                        /></td>
-                    <td class="scoreentry">-</td>
-                    <td class="scoreentry">{{key}}</td>
-                    <td>
-                        {% if value==-1 %}
-                            -
-                        {% else %}
-                            {{value}}
-                        {% endif %}
-                        </td></tr>
-                </tr>
-                {% endfor %}
-                <tr><td colspan="4"><button type="submit" id="score" class="btn" disabled>Score</button></td></tr>
-            
-            
-            </fieldset>
-        </form>
-        </tbody>
-            </table>
-        </div>
     </div>
 </div>
 

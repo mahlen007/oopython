@@ -23,10 +23,10 @@
                 </thead>
                 <tbody>
                 <fieldset>
-                {% for x in range(lb.ul.size()) %}
+                {% for x in range(lb.ul.size()-1,-1,-1) %}
                 <tr class="scoreentry">
-                    <td class="scoreentry">{{lb.ul.get(x)[0]}}</td>
                     <td class="scoreentry">{{lb.ul.get(x)[1]}}</td>
+                    <td class="scoreentry">{{lb.ul.get(x)[0]}}</td>
                     <td class="scoreentry"><input type="radio" id="row{{x}}" name="row" value="{{x}}"/></td>
                 </tr>
                 {% endfor %}

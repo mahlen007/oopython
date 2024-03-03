@@ -85,23 +85,6 @@ class UnorderedList():
         previous.next=current.next
         return
 
-    # def remove(self, data):
-    #     """ remove method """
-    #     current=self._head
-    #     if current.value==data:
-    #         self._head=current.next
-    #         return
-    #     previous=current
-    #     while current.has_next() and not current.value==data:
-    #         previous=current
-    #         current=current.next
-    #         print(str(previous.value)+"  "+str(current.value))
-    #     if current.value==data:
-    #         previous=current.next
-    #         print(previous.value)
-    #         return
-    #     return -1
-
     def size(self):
         """ size method """
         current=self._head

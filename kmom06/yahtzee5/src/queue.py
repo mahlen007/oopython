@@ -2,15 +2,15 @@
 """
 Class for Queue
 """
-from src.die import Die
 
 class Queue:
+    """ class Queue """
     def __init__(self):
         self._items = []
 
     def is_empty(self):
         """ Check if queue is empty """
-        return self._items == []
+        return not self._items
 
     def enqueue(self, item):
         """ Append item to queue """
@@ -31,8 +31,8 @@ class Queue:
     def to_list(self):
         """ Return a list from the queue """
         my_list=[]
-        for item in self._items:
-            my_list.append(self.dequeue())
+        for _ in range(len(self._items)):
+            my_list.append(self._items.pop(0))
         return my_list
 
     def from_list(self,my_list):
