@@ -1,5 +1,5 @@
 from node import Node
-import treevizer
+#import treevizer
 
 
 class BinarySearchTree:
@@ -66,14 +66,50 @@ class BinarySearchTree:
 
     def remove(self, key):
         """ Remove method """
-        node=self._get(self.root, key)
-        if node == None:
+        node = self._remove(self.root, key)
+        #print(node)
+        #node=self._get(self.root, key)
+        #if node == None:
+        #    raise KeyError("Key saknas")
         #if self.get(key)==None:
-            raise KeyError("Key saknas")
-        node=self._remove(node, key)
+            
+        #node=self._remove(node, key)
         return node.value
 
     @classmethod
+    def _remove(cls, node, key):
+        if node is None:
+            return node
+
+
+        if key < node.key:
+            node.left = cls._remove(node.left, key)
+
+        elif key > node.key:
+            node.right = cls._remove(node.right, key)
+
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+
+            node.key = cls._min_node(cls,node.right).key
+            node.right = cls._remove(node.right, node.key)
+
+        return node
+
+    def _min_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+
+
+    
+    
+    """
     def _remove(cls, node, key):
         if node.is_leaf():
             if node.is_left_child():
@@ -101,7 +137,7 @@ class BinarySearchTree:
                 successor_parent.right=successor.right
             node.key = successor.key
             return node
-
+"""
     def size(self):
         """ Size method """
         return self._size(self.root)
@@ -122,8 +158,8 @@ if __name__== "__main__":
     bst.insert(5, "fourth")
     bst.insert(11, "fifth")
     bst.insert(4, "hej")
-    bst.inorder_traversal_print()
-    print(bst.remove(5))
+    #bst.inorder_traversal_print()
+    print(bst.remove(40))
     bst.inorder_traversal_print()
 
-    treevizer.to_png(bst.root)
+    #treevizer.to_png(bst.root)
