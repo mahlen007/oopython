@@ -1,5 +1,9 @@
+"""
+Module BinarySearchTree
+"""
+
 from node import Node
-#import treevizer
+import treevizer
 
 
 class BinarySearchTree:
@@ -63,60 +67,21 @@ class BinarySearchTree:
             return cls._get(node.right,key)
         else:
             raise KeyError
-
+    """
     def remove(self, key):
-        """ Remove method """
-        node = self._remove(self.root, key)
-        #print(node)
-        #node=self._get(self.root, key)
-        #if node == None:
-        #    raise KeyError("Key saknas")
-        #if self.get(key)==None:
-            
-        #node=self._remove(node, key)
-        return node.value
-
+        Remove method 
+        #node=get(self.root,key)
+        node= self._remove(self.root, key)
+        return node.key
+    """
     @classmethod
     def _remove(cls, node, key):
-        if node is None:
-            return node
-
-
-        if key < node.key:
-            node.left = cls._remove(node.left, key)
-
-        elif key > node.key:
-            node.right = cls._remove(node.right, key)
-
-        else:
-            if node.left is None:
-                return node.right
-            elif node.right is None:
-                return node.left
-
-            node.key = cls._min_node(cls,node.right).key
-            node.right = cls._remove(node.right, node.key)
-
-        return node
-
-    def _min_node(self, node):
-        current = node
-        while current.left is not None:
-            current = current.left
-        return current
-
-
-
-    
-    
-    """
-    def _remove(cls, node, key):
         if node.is_leaf():
-            if node.is_left_child():
-                node.parent.left=None
+            if node.is_right_child():
+                node.parent.right=None
                 return node
             else:
-                node.parent.right=None
+                node.parent.left=None
                 return node
         elif not node.has_both_children():
             if node<node.parent:
@@ -137,7 +102,62 @@ class BinarySearchTree:
                 successor_parent.right=successor.right
             node.key = successor.key
             return node
-"""
+
+
+    def _delete(self, node, key):
+        if node is None:
+            return None
+        elif key < node.key:
+            node.left = self._delete(node.left, key)
+        elif key > node.key:
+            node.right = self._delete(node.right, key)
+        else:
+            if node.left is None and node.right is None:
+                node = None
+            elif node.left is None:
+                node = node.right
+            elif node.right is None:
+                node = node.left
+            else:
+                min_node = self._find_min(node.right)
+                node.value = min_node.value
+                node.right_child = self._delete(node.right, min_node.value)
+        return node
+
+    def remove(self, value):
+        self.root = self._delete(self.root, value)
+        return self.root
+
+    def _find_min(self, node):
+        while node.left is not None:
+            node = node.left
+        return node
+
+
+    """
+    def _remove(cls, node, key):
+        if node is None:
+            return node
+        if key < node.key:
+            node.left = cls._remove(node.left, key)
+        elif key > node.key:
+            node.right = cls._remove(node.right, key)
+        else:
+            if node.left is None:
+                return node.parent.right
+            elif node.right is None:
+                return node.parent.left
+            node.key = cls._min_node(cls,node.right).key
+            node.right = cls._remove(node.right, node.key)
+        print(node.value)
+        return node
+    """
+    def _min_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+   
     def size(self):
         """ Size method """
         return self._size(self.root)
@@ -159,7 +179,7 @@ if __name__== "__main__":
     bst.insert(11, "fifth")
     bst.insert(4, "hej")
     #bst.inorder_traversal_print()
-    print(bst.remove(40))
+    print(bst.remove(6))
     bst.inorder_traversal_print()
 
-    #treevizer.to_png(bst.root)
+    treevizer.to_png(bst.root)
