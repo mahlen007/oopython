@@ -59,105 +59,52 @@ class BinarySearchTree:
         """ Inner get method """
         if node is None:
             raise KeyError("Key saknas")
-        elif node.key==key:
+        if node.key==key:
             return node
-        elif key<node.key:
+        if key<node.key:
             return cls._get(node.left, key)
-        elif key>node.key:
+        if key>node.key:
             return cls._get(node.right,key)
-        else:
-            raise KeyError
-    """
+        raise KeyError
+
     def remove(self, key):
-        Remove method 
-        #node=get(self.root,key)
-        node= self._remove(self.root, key)
-        return node.key
-    """
+        """ Remove method """
+        node=self._get(self.root,key)
+
+        node= self._remove(node, key)
+        return node.value
+
     @classmethod
     def _remove(cls, node, key):
-        if node.is_leaf():
+        if node is None:
+            return None
+        elif node.is_leaf():
             if node.is_right_child():
                 node.parent.right=None
                 return node
             else:
                 node.parent.left=None
                 return node
-        elif not node.has_both_children():
-            if node<node.parent:
-                node.parent.left=node.left
-                return node
-            else:
-                node.parent.right=node.right
-                return node
-        elif node.has_both_children():
-            successor_parent=node
-            successor=node.right
-            while successor.left is not None:
-                successor_parent=successor
-                successor=successor.left
-            if successor_parent is not node:
-                successor_parent.left=successor.right
-            else:
-                successor_parent.right=successor.right
-            node.key = successor.key
-            return node
-
-
-    def _delete(self, node, key):
-        if node is None:
-            return None
-        elif key < node.key:
-            node.left = self._delete(node.left, key)
-        elif key > node.key:
-            node.right = self._delete(node.right, key)
-        else:
-            if node.left is None and node.right is None:
-                node = None
-            elif node.left is None:
-                node = node.right
-            elif node.right is None:
-                node = node.left
-            else:
-                min_node = self._find_min(node.right)
-                node.value = min_node.value
-                node.right_child = self._delete(node.right, min_node.value)
-        return node
-
-    def remove(self, value):
-        self.root = self._delete(self.root, value)
-        return self.root
-
-    def _find_min(self, node):
-        while node.left is not None:
-            node = node.left
-        return node
-
-
-    """
-    def _remove(cls, node, key):
-        if node is None:
-            return node
-        if key < node.key:
-            node.left = cls._remove(node.left, key)
-        elif key > node.key:
-            node.right = cls._remove(node.right, key)
+        elif key<node.key:
+            node.left=cls._remove(node.left, key)
+        elif key>node.key:
+            node.right=cls._remove(node.right, key)
         else:
             if node.left is None:
-                return node.parent.right
+                return node.right
             elif node.right is None:
-                return node.parent.left
-            node.key = cls._min_node(cls,node.right).key
-            node.right = cls._remove(node.right, node.key)
-        print(node.value)
+                return node.left
+            succ = cls._find_succ(cls,node.right)
+            node.key=succ.key
+            succ.parent.left=succ.right
+            node.right=cls._remove(node.right, succ.key)
         return node
-    """
-    def _min_node(self, node):
-        current = node
-        while current.left is not None:
-            current = current.left
-        return current
-   
+
+    def _find_succ(self, node):
+        while node.left is not None:
+            node=node.left
+        return node
+
     def size(self):
         """ Size method """
         return self._size(self.root)
@@ -172,14 +119,24 @@ class BinarySearchTree:
 
 if __name__== "__main__":
     bst = BinarySearchTree()
-    bst.insert(6, "first")
-    bst.insert(4, "second")
-    bst.insert(3, "third")
-    bst.insert(5, "fourth")
-    bst.insert(11, "fifth")
-    bst.insert(4, "hej")
+    bst.insert(8, "first")
+    bst.insert(5, "second")
+    bst.insert(2, "third")
+    bst.insert(15, "fourth1")
+    bst.insert(4, "fifth")
+    bst.insert(11, "hej")
+    bst.insert(12, "first")
+    bst.insert(10, "second")
+    bst.insert(0, "third")
+    bst.insert(1, "fourth2")
+    bst.insert(14, "fifth")
+    bst.insert(16, "hej")
+    bst.insert(7, "first")
+    bst.insert(8, "second")
+    bst.insert(6, "third")
     #bst.inorder_traversal_print()
-    print(bst.remove(6))
-    bst.inorder_traversal_print()
-
+    #treevizer.to_png(bst.root)
+    #print(bst.remove(5))
+    print(bst.remove(0))
+    #bst.inorder_traversal_print()
     treevizer.to_png(bst.root)
