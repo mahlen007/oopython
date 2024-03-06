@@ -3,7 +3,7 @@ Module BinarySearchTree
 """
 
 from node import Node
-#import treevizer
+import treevizer
 
 
 class BinarySearchTree:
@@ -70,36 +70,45 @@ class BinarySearchTree:
     def remove(self, key):
         """ Remove method """
         node=self._get(self.root,key)
-
-        node= self._remove(node, key)
-        return node.value
+        if node is None:
+            return None 
+        node,deleted_value= self._remove(node, key)
+        #print(deleted_value)
+        if node is not None and node.parent is None:
+            self.root = node
+        return deleted_value
 
     @classmethod
     def _remove(cls, node, key):
         if node is None:
-            return None
+            return None, None
         elif node.is_leaf():
             if node.is_right_child():
                 node.parent.right=None
-                return node
             else:
                 node.parent.left=None
-                return node
+            return node, node.value
         elif key<node.key:
-            node.left=cls._remove(node.left, key)
+            node.left, deleted_value=cls._remove(node.left, key)
         elif key>node.key:
-            node.right=cls._remove(node.right, key)
+            node.right, deleted_value=cls._remove(node.right, key)
         else:
+            deleted_value=node.value
             if node.left is None:
-                return node.right
-            elif node.right is None:
-                return node.left
+                return node.right, deleted_value
+            if node.right is None:
+                return node.left, deleted_value
             succ = cls._find_succ(cls,node.right)
-            node.key=succ.key
+            #if node.parent is None:
+            #    succ.parent is None
+            #node.key=succ.key
             #node=succ
-            succ.parent.left=succ.right
-            node.right=cls._remove(node.right, succ.key)
-        return node
+            #succ.parent.left=succ.right
+            #deleted_value=node.value
+            node.key, node.value=succ.key, succ.value
+            node.right, _=cls._remove(node.right, succ.key)
+            #succ.parent = node.parent
+        return node, deleted_value
 
     def _find_succ(self, node):
         while node.left is not None:
@@ -120,24 +129,24 @@ class BinarySearchTree:
 
 if __name__== "__main__":
     bst = BinarySearchTree()
-    bst.insert(8, "first")
-    bst.insert(5, "second")
-    bst.insert(2, "third")
-    bst.insert(15, "fourth1")
-    bst.insert(4, "fifth")
-    bst.insert(11, "hej")
-    bst.insert(12, "first")
-    bst.insert(10, "second")
-    bst.insert(0, "third")
-    bst.insert(1, "fourth2")
-    bst.insert(14, "fifth")
-    bst.insert(16, "hej")
-    bst.insert(7, "first")
-    bst.insert(8, "second")
-    bst.insert(6, "third")
+    bst.insert(8, "8")
+    bst.insert(5, "5")
+    bst.insert(2, "2")
+    bst.insert(15, "15")
+    bst.insert(4, "4")
+    bst.insert(11, "11")
+    bst.insert(12, "12")
+    bst.insert(10, "10")
+    bst.insert(0, "0")
+    bst.insert(1, "1")
+    bst.insert(14, "14")
+    bst.insert(16, "16")
+    bst.insert(7, "7")
+    bst.insert(8, "8")
+    bst.insert(6, "6")
     #bst.inorder_traversal_print()
-    #treevizer.to_png(bst.root)
+    treevizer.to_png(bst.root)
     #print(bst.remove(5))
-    print(bst.remove(0))
+    print(bst.remove(8))
     #bst.inorder_traversal_print()
-    #treevizer.to_png(bst.root)
+    treevizer.to_png(bst.root.left, png_path="tree2.png")
