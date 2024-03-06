@@ -3,7 +3,7 @@ Module BinarySearchTree
 """
 
 from node import Node
-import treevizer
+#import treevizer
 
 
 class BinarySearchTree:
@@ -96,6 +96,7 @@ class BinarySearchTree:
                 return node.left
             succ = cls._find_succ(cls,node.right)
             node.key=succ.key
+            #node=succ
             succ.parent.left=succ.right
             node.right=cls._remove(node.right, succ.key)
         return node
@@ -139,4 +140,4 @@ if __name__== "__main__":
     #print(bst.remove(5))
     print(bst.remove(0))
     #bst.inorder_traversal_print()
-    treevizer.to_png(bst.root)
+    #treevizer.to_png(bst.root)
