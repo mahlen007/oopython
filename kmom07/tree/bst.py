@@ -74,8 +74,8 @@ class BinarySearchTree:
             return None 
         node,deleted_value= self._remove(node, key)
         #print(deleted_value)
-        if node is not None and node.parent is None:
-            self.root = node
+        #if node is not None and node.parent is None:
+        #    self.root = node
         return deleted_value
 
     @classmethod
@@ -84,6 +84,7 @@ class BinarySearchTree:
             return None, None
         elif node.is_leaf():
             if node.is_right_child():
+                print("Här")
                 node.parent.right=None
             else:
                 node.parent.left=None
@@ -99,6 +100,10 @@ class BinarySearchTree:
             if node.right is None:
                 return node.left, deleted_value
             succ = cls._find_succ(cls,node.right)
+            if succ.parent is not None:
+                succ.parent.left=succ.right
+            else:
+                succ.parent.right=succ.right
             #if node.parent is None:
             #    succ.parent is None
             #node.key=succ.key
@@ -107,6 +112,7 @@ class BinarySearchTree:
             #deleted_value=node.value
             node.key, node.value=succ.key, succ.value
             node.right, _=cls._remove(node.right, succ.key)
+            del succ
             #succ.parent = node.parent
         return node, deleted_value
 
@@ -145,8 +151,8 @@ if __name__== "__main__":
     bst.insert(8, "8")
     bst.insert(6, "6")
     #bst.inorder_traversal_print()
-    treevizer.to_png(bst.root)
+    #treevizer.to_png(bst.root)
     #print(bst.remove(5))
-    print(bst.remove(8))
+    print(bst.remove(1))
     #bst.inorder_traversal_print()
     treevizer.to_png(bst.root.left, png_path="tree2.png")
