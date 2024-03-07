@@ -70,9 +70,10 @@ class BinarySearchTree:
     def remove(self, key):
         """ Remove method """
         node=self._get(self.root,key)
-        if node is None:
-            return None 
+        #if node is None:
+        #    return None 
         node,deleted_value= self._remove(node, key)
+        #print(node.key)
         #print(deleted_value)
         #if node is not None and node.parent is None:
         #    self.root = node
@@ -80,19 +81,34 @@ class BinarySearchTree:
 
     @classmethod
     def _remove(cls, node, key):
+        print("*")
         if node is None:
             return None, None
-        elif node.is_leaf():
+        #Är ett löv
+        elif node.right is None and node.left is None:
             if node.is_right_child():
                 print("Här")
                 node.parent.right=None
             else:
                 node.parent.left=None
             return node, node.value
-        elif key<node.key:
-            node.left, deleted_value=cls._remove(node.left, key)
-        elif key>node.key:
-            node.right, deleted_value=cls._remove(node.right, key)
+        #Har ett barn
+        elif node.left is None:
+            if node.is_right_child():
+                node.parent.right = node.right
+                node.right.parent=node.parent
+            else:
+                node.parent.left = node.right
+                node.right.parent=node.parent
+            return node.right, node.value
+        elif node.right is None:
+            if node.is_right_child():
+                node.parent.right = node.left
+                node.left.parent=node.parent
+            else:
+                node.parent.left = node.left
+                node.left.parent=node.parent
+            return node.left, node.value        
         else:
             deleted_value=node.value
             if node.left is None:
@@ -116,10 +132,30 @@ class BinarySearchTree:
             #succ.parent = node.parent
         return node, deleted_value
 
+        """
+        elif key<node.parent.key and not node.has_both_children:
+            #node.left, deleted_value=cls._remove(node.left, key)
+            if node.left is not None:
+                node.parent.left=node.left
+            else:
+                node.parent.left=node.right
+            return node, node.value
+        elif key>node.parent.key and not node.has_both_children :
+            #node.right, deleted_value=cls._remove(node.right, key)
+            if node.left is not None:
+                node.parent.right=node.left
+            else:
+                node.parent.right=node.right
+            return node, node.value
+        """
+
+
+
     def _find_succ(self, node):
         while node.left is not None:
             node=node.left
         return node
+    
 
     def size(self):
         """ Size method """
@@ -139,7 +175,7 @@ if __name__== "__main__":
     bst.insert(5, "5")
     bst.insert(2, "2")
     bst.insert(15, "15")
-    bst.insert(4, "4")
+    #bst.insert(4, "4")
     bst.insert(11, "11")
     bst.insert(12, "12")
     bst.insert(10, "10")
@@ -153,6 +189,6 @@ if __name__== "__main__":
     #bst.inorder_traversal_print()
     #treevizer.to_png(bst.root)
     #print(bst.remove(5))
-    print(bst.remove(1))
+    print(bst.remove(0))
     #bst.inorder_traversal_print()
-    treevizer.to_png(bst.root.left, png_path="tree2.png")
+    treevizer.to_png(bst.root, png_path="tree2.png")
