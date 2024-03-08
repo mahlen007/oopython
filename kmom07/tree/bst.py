@@ -81,13 +81,13 @@ class BinarySearchTree:
 
     @classmethod
     def _remove(cls, node, key):
-        print("*")
+        #print("*")
         if node is None:
             return None, None
         #Är ett löv
         elif node.right is None and node.left is None:
             if node.is_right_child():
-                print("Här")
+                #print("Här")
                 node.parent.right=None
             else:
                 node.parent.left=None
@@ -109,13 +109,19 @@ class BinarySearchTree:
                 node.parent.left = node.left
                 node.left.parent=node.parent
             return node.left, node.value        
+        #Har 2 barn
         else:
             deleted_value=node.value
-            if node.left is None:
-                return node.right, deleted_value
-            if node.right is None:
-                return node.left, deleted_value
+            #if node.left is None:
+            #    return node.right, deleted_value
+            #if node.right is None:
+            #    return node.left, deleted_value
             succ = cls._find_succ(cls,node.right)
+            print("Successor: "+str(succ.key))
+            node.key, node.value=succ.key, succ.value
+            succ.parent.left=succ.right
+            #succ.right.parent=succ.parent
+           
             if succ.parent is not None:
                 succ.parent.left=succ.right
             else:
@@ -126,8 +132,8 @@ class BinarySearchTree:
             #node=succ
             #succ.parent.left=succ.right
             #deleted_value=node.value
-            node.key, node.value=succ.key, succ.value
-            node.right, _=cls._remove(node.right, succ.key)
+            
+            #node.right, _=cls._remove(node.right, succ.key)
             del succ
             #succ.parent = node.parent
         return node, deleted_value
@@ -189,6 +195,6 @@ if __name__== "__main__":
     #bst.inorder_traversal_print()
     #treevizer.to_png(bst.root)
     #print(bst.remove(5))
-    print(bst.remove(0))
+    print(bst.remove(8))
     #bst.inorder_traversal_print()
     treevizer.to_png(bst.root, png_path="tree2.png")
