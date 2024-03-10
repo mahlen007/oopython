@@ -1,0 +1,31 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="w-100">
+        <div class="w-100">
+            <form role="form" method="POST" action="{{url_for('remove_word')}}">
+            <fieldset>
+            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>Remove word</h3></td></tr>
+                <tr><td colspan="5" class="td_bg"><h3>
+                    {% if word!='' %}
+                    The word '{{word}}' is 
+                    {% if spelling_result==False %}
+                        NOT
+                    {% endif %}
+                    removed from the dictionary.
+                    {% endif %}
+                </h3></td></tr>
+                <tr><td colspan="5" class=""><H4>Enter a word:</H4><br></td></tr>
+                    
+                    <tr><td colspan="5" height="25px">  
+                    <input type="text" id="remove_word" name="remove_word"></td>
+                         </tr><tr><td><span>&nbsp;</span></td><td>&nbsp;</td><td colspan="1"><button type="submit" id="remove_word" class="btn">Remove word</button></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+        </fieldset>
+    </form>   
+    </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+

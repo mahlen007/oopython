@@ -1,0 +1,20 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="jumbotron">
+        <h1>Welcome to words by Mattias!</h1>
+    </div>
+    <div class="containers">
+        <div class="containerss" id="first">
+            Words by Mattias helps you with your spelling. You enter a word to check if it is spelled correctly or not.
+            You can also print out all the words in the dicionary and change the dicionary if you want.
+            
+    </div>
+        <div class="containerss" id="second">
+            <img src="{{ url_for('static',filename='img/library.jpg') }}" width="512">
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+

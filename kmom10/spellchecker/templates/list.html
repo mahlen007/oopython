@@ -1,0 +1,32 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="w-100">
+        <div class="w-100">
+            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>The dicionary contains {{trie.word_count(trie.root)-no_removed|int}}</h3></td></tr>
+                <tr><td colspan="5" class=""><br></td></tr>
+        <tr>
+        {% set letter = 'a' %}
+        {% for word in trie.print_list() %}
+        {% if word[0] != letter %}
+        
+        {% set letter = word[0] %}
+        
+        {% endif %}
+        <td>
+        {% if word is not in removed_w%}
+            {{word}}
+        {% endif %}
+        
+        </td>
+        {% if loop.index is divisibleby 5 %}
+    </tr><tr>
+        {% endif %}
+        {% endfor %}
+    </tr></table>
+    </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+

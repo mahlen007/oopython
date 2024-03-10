@@ -1,0 +1,15 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h1>Om sida</h1>
+        <p>Jag heter {{ name }} och det här är kursen {{ course }}.</p>
+        <p>Jag har gjort den här sidan som en inlämningsarbete som har pågått under flera veckor.</p>
+        <p>Arbetet är mitt eget efter specifikation från BTH.</p>
+        <p>Mitt akronym på BTH: {{ acro }} </p>
+        <img src="{{ url_for('static',filename='img/leaf_256x256.png') }}" width="256">
+        
+    </div>
+</div>
+
+{% include 'footer.html' %}

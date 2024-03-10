@@ -1,0 +1,117 @@
+body {
+    padding-top: 4em;
+    padding-bottom: 2em;
+}
+
+#wrapper {
+    width: 500px;
+    border: 1px solid black;
+}
+#first {
+    width: 400px;
+    border: 0px solid red;
+}
+#second {
+    width: 500px;
+    border: 0px solid green;
+}
+
+
+h3 {
+    text-align: center
+}
+
+.scoreTable {
+    border: 2px solid #000;
+    width: 500px;
+}
+
+.scoreTable_ex {
+    border: 2px solid hsl(0, 0%, 0%);
+    width:50%; 
+    margin-left:25%; 
+    margin-right:25%;
+    align-self: center;
+
+}
+
+.scoreheader {
+    border: 2px solid #000;
+    font-style: oblique;
+    padding: 5px;
+    text-align: center;
+}
+
+.scoreentry {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 5px
+}
+
+.full {
+    width: 100%
+}
+
+.container {
+    
+    float: left;
+    padding-left: 2em
+}
+
+.w-100 {
+    margin-top: 3em;
+}
+
+.containerss {
+    margin-top: 2em;
+    float: left;
+    padding-left: 2em
+}
+
+.checkbox-inline {
+    padding: 2.6em;
+}
+
+.reroll {
+    color: #c50c0c;
+    max-width: 500px
+}
+
+.endgame {
+    color: green;
+    max-width: 500px
+}
+
+
+
+.die {
+    width: 50px;
+}
+
+footer {
+    margin-top: 4em;
+}
+
+.btn {
+    margin-top: 1em;
+    min-width: 100%;
+    max-width: 35em;
+    background-color: #a6ddf1;
+    
+}
+
+
+table {
+    width: 5em;
+    border: 2px;
+    border-color: black;
+    text-align: center;
+}
+
+.table_ex {
+    width: 100%
+}
+
+.td_bg {
+    background-color: #ffffff;
+}

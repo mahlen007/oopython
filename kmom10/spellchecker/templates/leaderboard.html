@@ -1,0 +1,43 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="w-100">
+        <div class="w-100">
+            <form role="form" method="POST" action="{{url_for('score')}}">
+            <fieldset>
+            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>Completed games!</h3></td></tr>
+                <tr><td colspan="5">We have {{lb.ul.size()}} saved games.</td>
+        </table>
+        </fieldset>
+    </form>   
+    </div>
+        <div class="w-100">
+            <form role="form" method="POST" action="{{url_for('delete_score')}}">
+            <table class="scoreTable_ex">
+                <thead class="scorehead">
+                    <tr>
+                        <th class="scoreentry">Player</th>
+                        <th class="scoreentry">Points</th>
+                        <th class="scoreentry">Delete entry</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <fieldset>
+                {% for x in range(lb.ul.size()-1,-1,-1) %}
+                <tr class="scoreentry">
+                    <td class="scoreentry">{{lb.ul.get(x)[1]}}</td>
+                    <td class="scoreentry">{{lb.ul.get(x)[0]}}</td>
+                    <td class="scoreentry"><input type="radio" id="row{{x}}" name="row" value="{{x}}"/></td>
+                </tr>
+                {% endfor %}
+                <tr><td colspan="3"><button type="submit" id="delete_score" class="btn">Delete score</button></td></tr>
+            </fieldset>
+        </form>
+        </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
