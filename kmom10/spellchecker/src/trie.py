@@ -3,7 +3,7 @@
 Class for Trie
 """
 from src.node import Node
-#from src.errors import MissingIndex
+from src.errors import SearchMiss
 #from src.errors import MissingValue
 
 class Trie():
@@ -17,7 +17,7 @@ class Trie():
                 return True
         return False
 
-    def insert(self, word):
+    def add_word(self, word):
         """ Insert a word in the trie """
         current = self.root
         for letter in word:
@@ -29,18 +29,20 @@ class Trie():
 
     def search(self, word):
         """ Search for a word in the trie """
+        word=word.lower()
         current=self.root
+
         for letter in word:
             index=ord(letter)-ord('a')
             if not current.children[index]:
-                return False
+                raise SearchMiss
             current=current.children[index]
         return current.isEndOfWord==True
 
     def insert_from_list(self,list_word):
         """ read from a list and insert """
         for word in list_word:
-            self.insert(word)
+            self.add_word(word)
 
     def read_from_file(self,filename):
         list_=[]
@@ -112,5 +114,5 @@ if __name__ == "__main__":
     list_=tr.read_from_file(filename)
     tr.insert_from_list(list_)
     #print(list_)
-    #print(tr.search("romino"))
+    print(tr.search("romano"))
     print(tr.word_count(tr.root))

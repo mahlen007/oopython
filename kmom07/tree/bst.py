@@ -70,6 +70,10 @@ class BinarySearchTree:
     def remove(self, key):
         """ Remove method """
         node=self._get(self.root,key)
+        if node.value=='11':
+            print("****")
+            print(self.inorder_traversal_print())
+            print("****")
         node,deleted_value= self._remove(node, key)
         return deleted_value
 
@@ -78,12 +82,15 @@ class BinarySearchTree:
         if node is None:
             return None, None
         #Är ett löv
-        elif node.left is None and node.right is None and node.parent is None:
+        elif node.is_leaf() and node.parent is None:
+            print("*"+str(node.value))
             deleted_value=node.value
-            node.parent=None
+            
             cls.root=None
-            return cls.root, deleted_value
-        elif node.is_leaf(): 
+            node.parent=None
+            bst = BinarySearchTree()
+            return None, deleted_value
+        elif node.is_leaf():
             if node.is_right_child():
                 node.parent.right=None
             else:
@@ -99,14 +106,14 @@ class BinarySearchTree:
             if node.right:
                 node.right.parent=node.parent
             node.parent=None
-            return node, node.value 
+            return node, node.value
         elif node.right is None and node.parent is not None:
-            print("problem"+str(node.key))
+            #print("problem"+str(node.key))
             if node.is_right_child():
                 node.parent.right = node.left
             else:
                 node.parent.left = node.left
-            if node.left: 
+            if node.left:
                 node.left.parent = node.parent          
             node.parent=None
             return node, node.value
@@ -116,7 +123,7 @@ class BinarySearchTree:
             #succ=node.left
             #node.key, node.value=succ.key, succ.value
             #node.left=succ.left
-            #node.right=succ.right 
+            #node.right=succ.right
             #cls.root=node
             node.left.parent=None
             node.parent=None
@@ -126,23 +133,23 @@ class BinarySearchTree:
         else:
             deleted_value=node.value
             succ = cls._find_succ(cls,node.right)
-            print("Node: "+str(node.key)+"succ: "+str(succ.key))
+            #print("Node: "+str(node.key)+"succ: "+str(succ.key))
             node.key, node.value=succ.key, succ.value
             if succ.parent.left is not None and succ.parent is not node:
                 succ.parent.left=succ.right
             elif succ.parent is node:
-                
+
                 #node.parent=None
                 if succ.right is not None:
-                    
+
                     succ.right.parent=node
                     node.right=succ.right
             if succ.has_right_child() and succ.parent is not node:
                 succ.right.parent=succ.parent
             if succ.is_leaf() and succ.parent is node:
-                print("test")
+                #print("test")
                 node.right=None
-            print("2.Node: "+str(node.key)+"succ: "+str(succ.key))
+            #print("2.Node: "+str(node.key)+"succ: "+str(succ.key))
             #if succ.parent.left is not None:
             #    succ.parent.left=None
             #else:
@@ -174,7 +181,7 @@ class BinarySearchTree:
 
 if __name__== "__main__":
     bst = BinarySearchTree()
-    """Test1"""
+    """Test1
     bst.insert(3, "3")
     bst.insert(8, "8")
     bst.insert(5, "5")
@@ -198,7 +205,7 @@ if __name__== "__main__":
     print(bst.remove(8))
     treevizer.to_png(bst.root, png_path="tree5.png")
     print(bst.remove(9))
-    
+    print(bst.inorder_traversal_print())
     print(bst.remove(1))
     print(bst.remove(2))
     print(bst.remove(0))
@@ -234,4 +241,14 @@ if __name__== "__main__":
     print(bst.remove(4))
     print(bst.remove(15))
     print(bst.remove(1))
-    """
+    bst.remove(6)
+    bst.remove(12)
+    bst.remove(10)
+    bst.remove(7)
+    bst.remove(11)
+    treevizer.to_png(bst.root,png_path="tree5b.png")
+    #print(bst.inorder_traversal_print())
+    print(bst.remove(8))
+    treevizer.to_png(bst.root,png_path="tree6b.png")
+    print(bst.remove(9))
+    treevizer.to_png(bst.root,png_path="tree6b.png")
