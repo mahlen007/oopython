@@ -3,8 +3,7 @@ Module BinarySearchTree
 """
 
 from node import Node
-import treevizer
-
+#import treevizer
 
 class BinarySearchTree:
     """ Class BST """
@@ -70,35 +69,44 @@ class BinarySearchTree:
     def remove(self, key):
         """ Remove method """
         node=self._get(self.root,key)
-        if node.value=='11':
-            print("****")
-            print(self.inorder_traversal_print())
-            print("****")
-        node,deleted_value= self._remove(node, key)
+        if node.is_root() and node.is_leaf():
+            deleted_value=node.value
+            self.root=None
+        elif node.is_root() and node.right is None:
+            self.root=node.left
+            node.left.parent=None
+        node,deleted_value= self._remove(node)
         return deleted_value
 
     @classmethod
-    def _remove(cls, node, key):
+    def _remove(cls, node):
+        """ Inner Remove method """
         if node is None:
             return None, None
-        #Är ett löv
-        elif node.is_leaf() and node.parent is None:
-            print("*"+str(node.value))
+        #Is a leaf
+        if node.is_leaf() and node.parent is None:
             deleted_value=node.value
-            
+            node.value=None
             cls.root=None
             node.parent=None
-            bst = BinarySearchTree()
             return None, deleted_value
-        elif node.is_leaf():
+        if node.is_leaf():
             if node.is_right_child():
                 node.parent.right=None
             else:
                 node.parent.left=None
             node.parent=None
             return node, node.value
-        #Har ett barn
-        elif node.left is None:
+        #Have one child
+        if node.left is None or node.right is None:
+            return cls._check_one_child(node)
+        #Have 2 children
+        return cls._check_two_children(node)
+
+    @classmethod
+    def _check_one_child(cls,node):
+        """ Check one child """
+        if node.left is None:
             if node.is_left_child():
                 node.parent.left = node.right
             else:
@@ -107,61 +115,42 @@ class BinarySearchTree:
                 node.right.parent=node.parent
             node.parent=None
             return node, node.value
-        elif node.right is None and node.parent is not None:
-            #print("problem"+str(node.key))
+        if node.right is None and node.parent is not None:
             if node.is_right_child():
                 node.parent.right = node.left
             else:
                 node.parent.left = node.left
             if node.left:
-                node.left.parent = node.parent          
+                node.left.parent = node.parent
             node.parent=None
             return node, node.value
-        elif node.right is None and node.parent is None:
-            #treevizer.to_png(bst.root, png_path="tree5.png")
+        if node.right is None and node.parent is None:
             deleted_value=node.value
-            #succ=node.left
-            #node.key, node.value=succ.key, succ.value
-            #node.left=succ.left
-            #node.right=succ.right
-            #cls.root=node
-            node.left.parent=None
-            node.parent=None
-            #node.left.parent=None
-            return node, deleted_value
-        #Har 2 barn
-        else:
-            deleted_value=node.value
-            succ = cls._find_succ(cls,node.right)
-            #print("Node: "+str(node.key)+"succ: "+str(succ.key))
-            node.key, node.value=succ.key, succ.value
-            if succ.parent.left is not None and succ.parent is not node:
-                succ.parent.left=succ.right
-            elif succ.parent is node:
+            cls.root=node.left
+            node=node.left
+        return node, deleted_value
 
-                #node.parent=None
-                if succ.right is not None:
-
-                    succ.right.parent=node
-                    node.right=succ.right
-            if succ.has_right_child() and succ.parent is not node:
-                succ.right.parent=succ.parent
-            if succ.is_leaf() and succ.parent is node:
-                #print("test")
-                node.right=None
-            #print("2.Node: "+str(node.key)+"succ: "+str(succ.key))
-            #if succ.parent.left is not None:
-            #    succ.parent.left=None
-            #else:
-            #    succ.parent.right=None
-            #node.right, _ = cls._remove(node.right, succ.key)
-            if node.right is None:
-                cls.root=node
-                #node.parent=cls.root
+    @classmethod
+    def _check_two_children(cls,node):
+        """ Check two children """
+        deleted_value=node.value
+        succ = cls._find_succ(cls,node.right)
+        node.key, node.value=succ.key, succ.value
+        if succ.parent.left is not None and succ.parent is not node:
+            succ.parent.left=succ.right
+        elif succ.parent is node:
+            if succ.right is not None:
+                succ.right.parent=node
+                node.right=succ.right
+        if succ.has_right_child() and succ.parent is not node:
+            succ.right.parent=succ.parent
+        if succ.is_leaf() and succ.parent is node:
+            node.right=None
         return node, deleted_value
 
 
     def _find_succ(self, node):
+        """ Find succeror"""
         while node.left is not None:
             node=node.left
         return node
@@ -176,12 +165,11 @@ class BinarySearchTree:
         """ Inner size method """
         if node is None:
             return 0
-        else:
-            return (cls._size(node.left)+1+cls._size(node.right))
+        return (cls._size(node.left)+1+cls._size(node.right))
 
 if __name__== "__main__":
     bst = BinarySearchTree()
-    """Test1
+    """Test1"""
     bst.insert(3, "3")
     bst.insert(8, "8")
     bst.insert(5, "5")
@@ -192,63 +180,22 @@ if __name__== "__main__":
     bst.insert(4, "4")
     bst.insert(9, "9")
     bst.insert(7, "7")
-    treevizer.to_png(bst.root)
+    #treevizer.to_png(bst.root)
     print(bst.remove(3))
-    treevizer.to_png(bst.root, png_path="tree1.png")
+    #treevizer.to_png(bst.root, png_path="tree1.png")
     print(bst.remove(4))
-    treevizer.to_png(bst.root, png_path="tree2.png")
+    #treevizer.to_png(bst.root, png_path="tree2.png")
     print(bst.remove(5))
     print(bst.remove(6))
-    treevizer.to_png(bst.root, png_path="tree3.png")
+    #treevizer.to_png(bst.root, png_path="tree3.png")
     print(bst.remove(7))
-    treevizer.to_png(bst.root, png_path="tree4.png")
+    #treevizer.to_png(bst.root, png_path="tree4.png")
     print(bst.remove(8))
-    treevizer.to_png(bst.root, png_path="tree5.png")
+    #treevizer.to_png(bst.root, png_path="tree5.png")
     print(bst.remove(9))
-    print(bst.inorder_traversal_print())
-    print(bst.remove(1))
-    print(bst.remove(2))
-    print(bst.remove(0))
-    treevizer.to_png(bst.root, png_path="tree6.png")
-    """
-    bst.insert(9, "9")
-    bst.insert(5, "5")
-    bst.insert(2, "2")
-    bst.insert(15, "15")
-    bst.insert(4, "4")
-    bst.insert(3, "3")
-    bst.insert(11, "11")
-    bst.insert(12, "12")
-    bst.insert(10, "10")
-    bst.insert(0, "0")
-    bst.insert(1, "1")
-    bst.insert(14, "14")
-    bst.insert(16, "16")
-    bst.insert(7, "7")
-    bst.insert(8, "8")
-    bst.insert(6, "6")
-
-    treevizer.to_png(bst.root,png_path="tree1b.png")
-    print(bst.remove(5))
-    print(bst.remove(0))
-    treevizer.to_png(bst.root,png_path="tree2b.png")
-    print(bst.remove(2))
-    treevizer.to_png(bst.root,png_path="tree3b.png")
-    print(bst.remove(3))
-    treevizer.to_png(bst.root,png_path="tree4b.png")
-    print(bst.remove(14))
-    print(bst.remove(16))
-    print(bst.remove(4))
-    print(bst.remove(15))
-    print(bst.remove(1))
-    bst.remove(6)
-    bst.remove(12)
-    bst.remove(10)
-    bst.remove(7)
-    bst.remove(11)
-    treevizer.to_png(bst.root,png_path="tree5b.png")
     #print(bst.inorder_traversal_print())
-    print(bst.remove(8))
-    treevizer.to_png(bst.root,png_path="tree6b.png")
-    print(bst.remove(9))
-    treevizer.to_png(bst.root,png_path="tree6b.png")
+    #treevizer.to_png(bst.root, png_path="tree6.png")
+    print(bst.remove(1))
+    print(bst.remove(2))
+    print(bst.remove(0))
+    #treevizer.to_png(bst.root, png_path="tree7.png")

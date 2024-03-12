@@ -11,6 +11,10 @@ class Node:
         self.left = None
         self.right = None
 
+    def is_root(self):
+        """ Check if node is root """
+        return self.parent is None
+
     def has_left_child(self):
         """ Check if node have left child """
         return self.left is not None
