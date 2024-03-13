@@ -2,14 +2,19 @@
 """
 Class for Trie
 """
-from src.node import Node
-from src.errors import SearchMiss
+from node import Node
+from errors import SearchMiss
 #from src.errors import MissingValue
 
 class Trie():
     """ Class Trie """
     def __init__(self):
         self.root=Node()
+
+    def getNode():
+        pNode = TrieNode()
+        pNode.isEndOfWord = False
+        return pNode
 
     def has_child(self,node):
         for i in range(26):
@@ -38,6 +43,34 @@ class Trie():
                 raise SearchMiss
             current=current.children[index]
         return current.isEndOfWord==True
+
+    def prefix_search(self, prefix):
+        prefix=prefix.lower()
+        result=[]
+        current=self.root
+        for letter in prefix:
+            index=ord(letter)-ord('a')
+            if current.children[index] is None: 
+                return result
+            current=current.children[index]
+        traverse(current, result, prefix)
+        return result
+
+    def traverse(self, node,leaves, parent):
+        if node.children is None:
+            leaves.add(parent)
+            return leaves
+        for i in range(node.children.length):
+            if (node.children[i] is not None):
+                letter=chr(i)
+                traverse(node.children[i], leaves, parent+letter)
+        return leaves
+
+    def isEmpty(self,node):
+        for i in range(26):
+            if node.children[i]:
+                return False
+        return True
 
     def insert_from_list(self,list_word):
         """ read from a list and insert """
@@ -105,14 +138,118 @@ class Trie():
                         str=str[0 : (len(str)-1)]
             index+=1
 
+    def __contains__():
+        pass
+
+    def __getitem__():
+        pass
+
+    def __setitem__():
+        pass
+
+    def __str__():
+        pass
+
+    def __iter__():
+        pass
+
+    def __delitem__():
+        pass
+
+    def delete(self, word):
+        word=word.lower()
+        return self.deleteHelper(self.root, word, 0)
+
+    def deleteHelper(self, curr, word, index):
+        if index == len(word):
+            
+            if not curr.isEndOfWord:
+                return False
+            curr.isEndOfWord = False
+            return len(curr.children) == 0
+        ch = word[index]
+        if curr.children[ord(ch)-ord('a')] == None:
+            return False
+        child = curr.children[ord(ch)-ord('a')]
+        shouldDeleteChild = self.deleteHelper(child, word, index + 1)
+        if shouldDeleteChild:
+            del curr.children[ord(ch)-ord('a')]
+            return len(curr.children) == 0
+        return False
+
+    def starts_with(self, prefix):
+        '''
+        Returns a list of all words beginning with the given prefix, or
+        an empty list if no words begin with that prefix.
+        '''
+        words = list()
+        current = self.root
+        for char in prefix:
+            if char not in current.children:
+                # Could also just return words since it's empty by default
+                return list()
+            current = current.children[char]
+
+        # Step 2
+        self._child_words_for(current, words)
+        return words
+
+    def _child_words_for(self, node, words):
+        if node.is_word:
+            words.append(node.text)
+        for letter in node.children:
+            self._child_words_for(node.children[letter], words)
+
+    def get_word_beginning_with(self, query): 
+        
+        words = [] # The answer
+        slate = list(query) # temp cache to append chars to
+        curr = self.root
+        def movebychar(char, curr):
+            # inner helper function to find subtree
+            for child in curr.children:
+                if child.val == char:
+                    return child
+            return None # Couldn't find child, return None
+        def add_word_with_dfs(curr):
+            # inner helper function to perform DFS and populate answer 
+            if curr is None:
+                return
+            if curr.isword:
+                words.append("".join(slate[:]))
+            for child in curr.children:
+                if child is not None:
+                    slate.append(child.val)
+                    add_word_with_dfs(child)
+                    slate.pop()
+        # Find subtree that begins with last query character
+        for char in query:
+            curr = movebychar(char, curr)
+            if curr is None:  # Cant go any further
+                break
+        # At this point, we have found a subtree with its root node
+        # value equal to last of query char.
+        # Recursively traverse with DFS
+        add_word_with_dfs(curr)
+        # Finally, return answer
+        return words
+
+
+
  
 if __name__ == "__main__":
     lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
     tr=Trie()
+    #root = getNode()
     tr.insert_from_list(lista)
     filename='../tiny_dictionary.txt'
-    list_=tr.read_from_file(filename)
-    tr.insert_from_list(list_)
-    #print(list_)
-    print(tr.search("romano"))
-    print(tr.word_count(tr.root))
+    #list_=tr.read_from_file(filename)
+    #tr.insert_from_list(list_)
+    print(tr.print_list())
+    #print(tr.search("romano"))
+    print(tr.delete("man"))
+    #print(tr.search("romano"))
+    print(tr.print_list())
+    #print(tr.starts_with('ma'))
+    print(tr.get_word_beginning_with('ma'))
+    #print(tr.word_count(tr.root))
