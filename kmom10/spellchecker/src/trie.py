@@ -182,23 +182,43 @@ class Trie():
         Returns a list of all words beginning with the given prefix, or
         an empty list if no words begin with that prefix.
         '''
-        words = list()
+        words = []
         current = self.root
         for char in prefix:
-            if char not in current.children:
+            if current.children[ord(char)-ord('a')] is None:
+            #if char not in current.children:
                 # Could also just return words since it's empty by default
-                return list()
-            current = current.children[char]
-
+                raise SearchMiss #return words
+            current=current.children[ord(char)-ord('a')]
+            #current = current.children[char]
+        word=prefix
         # Step 2
-        self._child_words_for(current, words)
+        words=self._child_words_for(current, word,words)
         return words
 
-    def _child_words_for(self, node, words):
-        if node.is_word:
-            words.append(node.text)
-        for letter in node.children:
-            self._child_words_for(node.children[letter], words)
+    @classmethod
+    def _child_words_for(cls, node,word, words,length=0):
+        count=0
+        if node.isEndOfWord:
+        #if node.is_word:
+            words.append(word)
+            word=word[:length-1-count]
+        for i in range(26):
+        #for letter in node.children:
+            if node.children[i]:
+                letter=chr(i+ord('a'))
+                count+=1
+                length=len(word)
+                word=word+letter
+                
+                words=cls._child_words_for(node.children[ord(letter)-ord('a')],word, words,length)
+                if node.isEndOfWord:
+                    words.append(word)
+                    print(word)
+                    word=word[:len(word)-1-count]
+                    print('*'+word)
+        return words
+        
 
     def get_word_beginning_with(self, query): 
         
@@ -238,18 +258,18 @@ class Trie():
 
  
 if __name__ == "__main__":
-    lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+    lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home','mandoline','make','map']
     tr=Trie()
     #root = getNode()
     tr.insert_from_list(lista)
     filename='../tiny_dictionary.txt'
     #list_=tr.read_from_file(filename)
     #tr.insert_from_list(list_)
-    print(tr.print_list())
+    #print(tr.print_list())
     #print(tr.search("romano"))
-    print(tr.delete("man"))
+    #print(tr.delete("man"))
     #print(tr.search("romano"))
-    print(tr.print_list())
+    #print(tr.print_list())
     #print(tr.starts_with('ma'))
-    print(tr.get_word_beginning_with('ma'))
+    print(tr.starts_with('ma'))
     #print(tr.word_count(tr.root))
