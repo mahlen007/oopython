@@ -21,12 +21,16 @@ app.json.sort_keys = False
 @app.route("/")
 def main():
     """ Main route """
-    session['spelling_result']=''
-    session['filename']="tiny_dictionary.txt"
-    session['word']=''
-    session['r_word']=''
+    reset_session()
+
+    #session['spelling_result']=''
+    #session['filename']="tiny_dictionary.txt"
+    #session['word']=''
+    #session['r_word']=''
+    #session['prefix_result']=''
+    #session['prefix_list']=''
     #session['removed_words']='test'
-    session['removed_words']=json.dumps('')
+    #session['removed_words']=json.dumps('')
     return render_template("index.html")
 
 @app.route("/check")#,methods=["POST"])
@@ -57,6 +61,37 @@ def check_spelling():
     #session["trie"]=tr
     return redirect(url_for('check'))
     #return render_template("leaderboard.html",lb=lb1)
+
+@app.route("/prefix")#,methods=["POST"])
+def prefix():
+    prefix_result=session['prefix_result']
+    prefix_list=session['prefix_list']
+    word=session['word']
+    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=prefix_list)
+
+@app.route("/check_prefix",methods=["POST"])
+def check_prefix():
+    """ Route for check spelling """
+    tr=Trie()
+    word=request.form.get("word")
+    #if session["filename"]=='':
+    filename=session["filename"]
+    #else:
+    #    filename="tiny_dictionary.txt"
+    removed_words=json.loads(session['removed_words']).split(' ')
+    word_list=tr.read_from_file(filename)
+    tr.insert_from_list(word_list)
+    session['prefix_list']=tr.prefix_search(word)
+    session['spelling_result']=tr.search(word)
+    if word in removed_words:
+        session['spelling_result']=False
+    
+    #print(tr.search(word))
+    session['word']=word
+    #session["trie"]=tr
+    return redirect(url_for('prefix'))
+    #return render_template("leaderboard.html",lb=lb1)
+
 
 @app.route("/list")#,methods=["POST"])
 def list_words():
@@ -141,16 +176,27 @@ def change():
 def change_dictionary():
     """ Route for add result to Leaderboard """
     _ = [session.pop(key) for key in list(session.keys())]
-    session['spelling_result']=''
-    session['filename']="tiny_dictionary.txt"
-    session['word']=''
-    session['r_word']=''
-    session['removed_words']=json.dumps('')
+    reset_session()
+    #session['spelling_result']=''
+    #session['filename']="tiny_dictionary.txt"
+    #session['word']=''
+    #session['r_word']=''
+    #session['removed_words']=json.dumps('')
     filename=request.form.get("word_list")
     session['filename']=filename
     
     return redirect(url_for('change'))
     #return render_template("leaderboard.html",lb=lb1)
+
+def reset_session():
+    session['spelling_result']=''
+    session['filename']="tiny_dictionary.txt"
+    session['word']=''
+    session['r_word']=''
+    session['prefix_result']=''
+    session['prefix_list']=''
+    #session['removed_words']='test'
+    session['removed_words']=json.dumps('')
 
 
 @app.route("/about")

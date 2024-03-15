@@ -2,8 +2,8 @@
 """
 Class for Trie
 """
-from node import Node
-from errors import SearchMiss
+from src.node import Node
+from src.errors import SearchMiss
 #from src.errors import MissingValue
 
 class Trie():
@@ -26,9 +26,10 @@ class Trie():
         """ Insert a word in the trie """
         current = self.root
         for letter in word:
+            #current.data=letter
             index=ord(letter)-ord('a')
             if not current.children[index]:
-                current.children[index]=Node()
+                current.children[index]=Node(letter)
                 current.data=letter
             current=current.children[index]
         current.isEndOfWord=True
@@ -45,27 +46,6 @@ class Trie():
             current=current.children[index]
         return current.isEndOfWord==True
 
-    def prefix_search(self, prefix):
-        prefix=prefix.lower()
-        result=[]
-        current=self.root
-        for letter in prefix:
-            index=ord(letter)-ord('a')
-            if current.children[index] is None: 
-                return result
-            current=current.children[index]
-        traverse(current, result, prefix)
-        return result
-
-    def traverse(self, node,leaves, parent):
-        if node.children is None:
-            leaves.add(parent)
-            return leaves
-        for i in range(node.children.length):
-            if (node.children[i] is not None):
-                letter=chr(i)
-                traverse(node.children[i], leaves, parent+letter)
-        return leaves
 
     def isEmpty(self,node):
         for i in range(26):
@@ -87,38 +67,6 @@ class Trie():
                 list_.append(line.strip())
         openfile.close()
         return list_
-
-    def suggestionsRec(self, node, word):
- 
-        # Method to recursively traverse the trie
-        # and return a whole word.
-        if node.isEndOfWord:
-            print(word)
- 
-        for a, n in node.children:
-            self.suggestionsRec(n, word + a)
- 
-    def printAutoSuggestions(self, key):
- 
-        # Returns all the words in the trie whose common
-        # prefix is the given key thus listing out all
-        # the suggestions for autocomplete.
-        node = self.root
- 
-        for a in key:
-            # no string in the Trie has this prefix
-            if not node.children[ord(a)-ord('a')]:
-                return 0
-            node = node.children[ord(a)-ord('a')]
- 
-        # If prefix is present as a word, but
-        # there is no subtree below the last
-        # matching node.
-        if not node.children:
-            return -1
- 
-        self.suggestionsRec(node, key)
-        return 1
 
 
     def get(self,index):
@@ -162,14 +110,52 @@ class Trie():
                 #print(2,str)
                 if node.children[index].isEndOfWord == False:
                     self._print_list(visited,node.children[index],str)
-                    str=str[0 : (len(str)-1)]
+                    str=str[: -1]
                 else:
                     if str not in visited:
                         visited.append(str)
                     if self.has_child(node.children[index]):
                         self._print_list(visited,node.children[index],str)
-                        str=str[0 : (len(str)-1)]
+                        str=str[:-1]
             index+=1
+
+    def prefix_search(self,prefix):
+        """ print method """
+        prefix=prefix.lower()
+        visited=[]
+        str=''
+        node=self.root
+        for letter in prefix:
+            if node.children[ord(letter)-ord('a')] is None:
+                raise SearchMiss
+            node=node.children[ord(letter)-ord('a')] 
+        visited=self._prefix_search(visited,node,str,prefix)
+        #print("Content of Trie:")
+        return visited
+        #for i in range(len(visited)):
+        #    print(visited[i])
+
+    def _prefix_search(self,visited,node,str,prefix):
+        index=0
+        while index<26:
+            if node.children[index]:
+                str+=chr(ord('a')+index)
+                #print(2,str)
+                if node.children[index].isEndOfWord == False:
+                    self._prefix_search(visited,node.children[index],str,prefix)
+                    str=str[: -1]
+                else:
+                    if str not in visited:
+                        visited.append(prefix+str)
+                    if self.has_child(node.children[index]):
+                        self._prefix_search(visited,node.children[index],str,prefix)
+                        str=str[:-1]
+            index+=1
+        return visited
+
+
+
+
 
     def __contains__():
         pass
@@ -210,121 +196,11 @@ class Trie():
             return len(curr.children) == 0
         return False
 
-    def starts_with(self, prefix):
-        '''
-        Returns a list of all words beginning with the given prefix, or
-        an empty list if no words begin with that prefix.
-        '''
-        words = []
-        current = self.root
-        for char in prefix:
-            if current.children[ord(char)-ord('a')] is None:
-            #if char not in current.children:
-                # Could also just return words since it's empty by default
-                raise SearchMiss #return words
-            current=current.children[ord(char)-ord('a')]
-            #current = current.children[char]
-        word=prefix
-        # Step 2
-        words=self._child_words_for(current, word,words)
-        return words
-
-    @classmethod
-    def _child_words_for(cls, node,word, words,length=0):
-        count=0
-        if node.isEndOfWord:
-        #if node.is_word:
-            words.append(word)
-            word=word[:len(word)-count-1]
-        for i in range(26):
-        #for letter in node.children:
-            if node.children[i]:
-                letter=chr(i+ord('a'))
-                #count+=1
-                length=len(word)
-                word=word+letter
-                count+=1
-                words=cls._child_words_for(node.children[ord(letter)-ord('a')],word, words,length)
-                if node.isEndOfWord:
-                    words.append(word)
-                    print(word)
-                    word=word[:len(word)-count-1]
-
-                    print(count)
-        return words
-        
-
-    def get_word_beginning_with(self, query): 
-        
-        words = [] # The answer
-        slate = list(query) # temp cache to append chars to
-        curr = self.root
-        def movebychar(char, curr):
-            # inner helper function to find subtree
-            for child in curr.children:
-                if child.val == char:
-                    return child
-            return None # Couldn't find child, return None
-        def add_word_with_dfs(curr):
-            # inner helper function to perform DFS and populate answer 
-            if curr is None:
-                return
-            if curr.isword:
-                words.append("".join(slate[:]))
-            for child in curr.children:
-                if child is not None:
-                    slate.append(child.val)
-                    add_word_with_dfs(child)
-                    slate.pop()
-        # Find subtree that begins with last query character
-        for char in query:
-            curr = movebychar(char, curr)
-            if curr is None:  # Cant go any further
-                break
-        # At this point, we have found a subtree with its root node
-        # value equal to last of query char.
-        # Recursively traverse with DFS
-        add_word_with_dfs(curr)
-        # Finally, return answer
-        return words
-
-
-    #returns all words with given prefix
-    #Time O(n), Space O(n), n is number of nodes included(prefix and branches) 
-    def autocomplete(self, prefix):
-        node = self.root
-        res = []
-        for ch in prefix:
-            node = node.children[ord(ch)-ord('a')]
-            #print(ch)
-            if node is None:
-                return []     
-        self.helper(node, res, prefix)#[:-1]) 
-        return res   
- 
-	#recursion function called by autocomplete, Time O(n), Space O(n)	
-    # n is number of nodes in bra
-    def helper(self, node, res, prefix):
-        
-        if node == None:
-            return
-        if node.isEndOfWord :
-            print(node.data)
-            res.append(prefix + node.data)		   	      	   
-        for child in node.children:	 
-            if child is not None:
-                
-                #print(child.data)
-                self.helper(child, res,prefix + node.data)	
-            #if node == None:
-            #    return  
-            #print(prefix+node.data)    
-            
 
 
  
 if __name__ == "__main__":
-    lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home','mandoline','make','map']
+    lista=['hood','house','horse','name','man','hit','apply','riddle','banana','home','mandoline','make','map']
     tr=Trie()
     #root = getNode()
     tr.insert_from_list(lista)
@@ -338,5 +214,5 @@ if __name__ == "__main__":
     print(tr.print_list())
     #print(tr.starts_with('ma'))
     #print(tr.autocomplete('ma'))
-    print(tr.autocomplete('ma'))
+    print(tr.prefix_search('H'))
     #print(tr.word_count(tr.root))
