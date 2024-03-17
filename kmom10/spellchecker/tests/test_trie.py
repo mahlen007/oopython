@@ -14,22 +14,43 @@ class TestUnorderlist(unittest.TestCase):
     def test_search_with_right_word_ok(self):
         """ Test if search works with right word """
         tr=Trie()
-        lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+        lista=tr.read_from_file("tiny_frequency.txt")
+        #lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
         tr.insert_from_list(lista)
-        self.assertEqual(tr.search("horse"), True, "Should be True") # Assert
+        self.assertEqual(tr.search("offer"), True, "Should be True") # Assert
 
     def test_search_with_right_word_but_upper_letters_ok(self):
         """ Test if search works with right word but upper letters """
         tr=Trie()
-        lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+        lista=tr.read_from_file("tiny_frequency.txt")
+        #lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
         tr.insert_from_list(lista)
-        self.assertEqual(tr.search("NAME"), True, "Should be True") # Assert
+        self.assertEqual(tr.search("HUMOR"), True, "Should be True") # Assert
 
 
     def test_seach_with_wrong_word_and_get_exception_ok(self):
         """ Test if exception for search works """
         tr=Trie()
-        lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+        #lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+        lista=tr.read_from_file("tiny_frequency.txt")
         tr.insert_from_list(lista)
         with self.assertRaises(SearchMiss):# Assert
             tr.search("hidden")
+
+    def test_delete_and_search_and_get_exception_ok(self):
+        """ Test if delete and exception for search works """
+        tr=Trie()
+        lista=tr.read_from_file("tiny_frequency.txt")
+        tr.insert_from_list(lista)
+        tr.delete('humor')
+        print(tr.search('humor'))
+        with self.assertRaises(SearchMiss):# Assert
+            tr.search('humor')
+
+    def test_prefix_search_with_right_word_ok(self):
+        """ Test if prefix works with right word """
+        tr=Trie()
+        #lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
+        lista=tr.read_from_file("tiny_frequency.txt")
+        tr.insert_from_list(lista)
+        self.assertEqual(tr.prefix_search("vill"), [('villain', 10551.3)], "Should be True")

@@ -6,13 +6,10 @@ Wordchecker app
 import os
 import re
 import traceback
+import json
 from flask import Flask, render_template, request, session, redirect, url_for
 from src.trie import Trie
-import json
-#from src.scoreboard import Scoreboard
-#from src.hand import Hand
-#from src.leaderboard import Leaderboard
-#from src.game import Game
+from src.errors import SearchMiss
 
 app = Flask(__name__)
 app.secret_key = re.sub(r"[^a-z\d]", "", os.path.realpath(__file__))
@@ -22,19 +19,11 @@ app.json.sort_keys = False
 def main():
     """ Main route """
     reset_session()
-
-    #session['spelling_result']=''
-    #session['filename']="tiny_dictionary.txt"
-    #session['word']=''
-    #session['r_word']=''
-    #session['prefix_result']=''
-    #session['prefix_list']=''
-    #session['removed_words']='test'
-    #session['removed_words']=json.dumps('')
     return render_template("index.html")
 
 @app.route("/check")#,methods=["POST"])
 def check():
+    """ Route for check spelling """
     spelling_result=session['spelling_result']
     word=session['word']
     return render_template("check.html",spelling_result=spelling_result,word=word)
@@ -52,7 +41,10 @@ def check_spelling():
     removed_words=json.loads(session['removed_words']).split(' ')
     word_list=tr.read_from_file(filename)
     tr.insert_from_list(word_list)
-    session['spelling_result']=tr.search(word)
+    try:
+        session['spelling_result']=tr.search(word)
+    except SearchMiss:
+        session['spelling_result']=False
     if word in removed_words:
         session['spelling_result']=False
 
@@ -64,14 +56,15 @@ def check_spelling():
 
 @app.route("/prefix")#,methods=["POST"])
 def prefix():
+    """ Route for prefix search """
     prefix_result=session['prefix_result']
-    prefix_list=session['prefix_list']
+    pre_l=session['prefix_list']
     word=session['word']
-    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=prefix_list)
+    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=pre_l)
 
 @app.route("/check_prefix",methods=["POST"])
 def check_prefix():
-    """ Route for check spelling """
+    """ Route for check prefix """
     tr=Trie()
     word=request.form.get("word")
     #if session["filename"]=='':
@@ -82,10 +75,10 @@ def check_prefix():
     word_list=tr.read_from_file(filename)
     tr.insert_from_list(word_list)
     session['prefix_list']=tr.prefix_search(word)
-    session['spelling_result']=tr.search(word)
+    #session['spelling_result']=tr.search(word)
     if word in removed_words:
         session['spelling_result']=False
-    
+
     #print(tr.search(word))
     session['word']=word
     #session["trie"]=tr
@@ -97,7 +90,7 @@ def check_prefix():
 def list_words():
     """ Route for list the words """
     tr=Trie()
-    letter='a'
+    ch='a'
     #if session["filename"]=='':
     filename=session["filename"]
     #else:
@@ -105,31 +98,31 @@ def list_words():
     word_list=tr.read_from_file(filename)
     tr.insert_from_list(word_list)
     removed_words=json.loads(session['removed_words']).split(' ')
-    number_removed=len(removed_words)-1
-    return render_template("list.html",trie=tr,letter=letter,removed_w=removed_words,no_removed=number_removed)
+    nr_rem=len(removed_words)-1
+    return render_template("list.html",trie=tr,letter=ch,removed_w=removed_words,no_removed=nr_rem)
     #return render_template("add_result.html",sb=sb1)
 
 @app.route("/remove")#,methods=["POST"])
 def remove():
+    """ Route for remove word """
     #tr=Trie()
     #word=request.form.get("word")
     #if session["filename"]=='':
     #filename=session["filename"]
     #else:
     #    filename="tiny_dictionary.txt"
-    removed_words=json.loads(session['removed_words']).split(' ')
+    removed_w=json.loads(session['removed_words']).split(' ')
     #word_list=tr.read_from_file(filename)
     #tr.insert_from_list(word_list)
     #session['spelling_result']=tr.search(word)
     word=session['r_word']
     session['r_word']=''
-    
     #if word in removed_words:
     #    session['spelling_result']=False
     #word=request.form.get("word")
-    spelling_result=session['spelling_result']
-    print(spelling_result)
-    return render_template("remove.html",spelling_result=spelling_result,word=word,removed_words=removed_words)
+    s_result=session['spelling_result']
+    print(s_result)
+    return render_template("remove.html",spelling_result=s_result,word=word,removed_words=removed_w)
     #return render_template("add_result.html",sb=sb1)
 
 @app.route("/remove_word",methods=["POST"])
@@ -153,9 +146,10 @@ def remove_word():
     #print(sp_result)
     #print(tr.search(word))
     #session['word']=word
-    if sp_result==True:
+    if sp_result is True:
         removed_words=json.loads(session['removed_words']).split(' ')
-        if word not in removed_words: 
+        if word not in removed_words:
+            tr.delete(word)
             removed_words.append(word)
         session['removed_words']=json.dumps(' '.join(removed_words))
         #print(removed_words)
@@ -165,6 +159,7 @@ def remove_word():
 
 @app.route("/change")#,methods=["POST"])
 def change():
+    """ Change dictionary """
     #if session["filename"]=='':
     filename=session["filename"]
     #else:
@@ -184,13 +179,14 @@ def change_dictionary():
     #session['removed_words']=json.dumps('')
     filename=request.form.get("word_list")
     session['filename']=filename
-    
+
     return redirect(url_for('change'))
     #return render_template("leaderboard.html",lb=lb1)
 
 def reset_session():
+    """ Reset session """
     session['spelling_result']=''
-    session['filename']="tiny_dictionary.txt"
+    session['filename']="tiny_frequency.txt"
     session['word']=''
     session['r_word']=''
     session['prefix_result']=''
@@ -212,32 +208,6 @@ def about():
 def setup():
     """ Route for set up game with several players """
     return redirect(url_for('main'))
-
-@app.route("/score",methods=["POST"])
-def score():
-    """ Route for lock in score in Scoreboard"""
-    return redirect(url_for('main'))
-
-
-
-
-
-@app.route("/show_leaderboard")#,methods=["POST"])
-def show_leaderboard():
-    """ Route for add score to Scoreboard """
-    return render_template("leaderboard.html",lb=lb1)
-
-@app.route("/roll_dice", methods=["POST"])
-def roll_dice():
-    """ Route for roll the dice """
-    return redirect(url_for('main'))
-
-
-
-@app.route("/delete_score",methods=["POST"])
-def delete_score():
-    """ Route for delete score """
-    return render_template("leaderboard.html",lb=lb1)
 
 
 @app.route("/reset")
