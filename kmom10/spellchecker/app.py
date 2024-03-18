@@ -39,8 +39,9 @@ def check_spelling():
     #else:
     #    filename="tiny_dictionary.txt"
     removed_words=json.loads(session['removed_words']).split(' ')
-    word_list=tr.read_from_file(filename)
-    tr.insert_from_list(word_list)
+    ##word_list=tr.create_from_file(filename)
+    #tr.insert_from_list(word_list)
+    tr.create_from_file(filename)
     try:
         session['spelling_result']=tr.search(word)
     except SearchMiss:
@@ -72,8 +73,9 @@ def check_prefix():
     #else:
     #    filename="tiny_dictionary.txt"
     removed_words=json.loads(session['removed_words']).split(' ')
-    word_list=tr.read_from_file(filename)
-    tr.insert_from_list(word_list)
+    #word_list=tr.read_from_file(filename)
+    #tr.insert_from_list(word_list)
+    tr.create_from_file(filename)
     session['prefix_list']=tr.prefix_search(word)
     #session['spelling_result']=tr.search(word)
     if word in removed_words:
@@ -95,8 +97,9 @@ def list_words():
     filename=session["filename"]
     #else:
     #    filename="tiny_dictionary.txt"
-    word_list=tr.read_from_file(filename)
-    tr.insert_from_list(word_list)
+    tr.create_from_file(filename)
+    #word_list=tr.read_from_file(filename)
+    #tr.insert_from_list(word_list)
     removed_words=json.loads(session['removed_words']).split(' ')
     nr_rem=len(removed_words)-1
     return render_template("list.html",trie=tr,letter=ch,removed_w=removed_words,no_removed=nr_rem)
@@ -136,8 +139,9 @@ def remove_word():
     filename=session["filename"]
     #else:
     #    filename="tiny_dictionary.txt"
-    word_list=tr.read_from_file(filename)
-    tr.insert_from_list(word_list)
+    #word_list=tr.read_from_file(filename)
+    #tr.insert_from_list(word_list)
+    tr.create_from_file(filename)
     sp_result=tr.search(word)
     session['spelling_result']=sp_result
     removed_words=json.loads(session['removed_words']).split(' ')

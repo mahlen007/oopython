@@ -5,7 +5,6 @@ Class for Trie
 #import re
 from src.node import Node
 from src.errors import SearchMiss
-#from src.errors import MissingValue
 
 class Trie():
     """ Class Trie """
@@ -61,21 +60,28 @@ class Trie():
                 return False
         return True
 
+    
     def insert_from_list(self,list_word):
         """ read from a list and insert """
         for word in list_word:
             self.add_word(word)
 
-    def read_from_file(self,fname):
+    @classmethod
+    def create_from_file(cls,fname="frequency.txt"):
         """ read from file """
-        list_=[]
+        list_word=[]
+        
         with open(fname, 'r', encoding='utf-8') as openfile:
             # Reading from json file
             #json_object = json.load(openfile)
             for line in openfile:
-                list_.append(line.strip())
+                list_word.append(line.strip())
         openfile.close()
-        return list_
+        #cls.insert_from_list(list_word)
+        for word in list_word:
+            cls().add_word(word)
+        #return cls
+        #return list_
 
 
     def get(self,index):
@@ -130,21 +136,22 @@ class Trie():
                         str_=str_[:-1]
             index+=1
 
-    def prefix_search(self,prefix):
+    @classmethod
+    def prefix_search(cls,prefix):
         """ prefix search """
         prefix=prefix.lower()
         visited=[]
         str_=''
-        node=self.root
+        node=cls().root
         for letter in prefix:
             if node.children[ord(letter)-ord('a')] is None:
                 return []
             node=node.children[ord(letter)-ord('a')]
-        visited=self._prefix_search(visited,node,str_,prefix)
+        visited=cls()._prefix_search(visited,node,str_,prefix)
         #print("Content of Trie:")
         pr_sort=[]
-        prefix_sorted=self.sort_prefix(visited)
-        if self.search(prefix):
+        prefix_sorted=cls().sort_prefix(visited)
+        if cls().search(prefix):
             visited.append((prefix,node.freq))
         if len(prefix_sorted)<=10:
             return prefix_sorted
@@ -250,12 +257,12 @@ class Trie():
         return False
 
 if __name__ == "__main__":
-    tr=Trie()
+    #tr=Trie()
     #root = getNode()
     #tr.insert_from_list(lista)
     filename='../tiny_frequency.txt'
-    lista=tr.read_from_file(filename)
-    tr.insert_from_list(lista)
+    tr=Trie.create_from_file(filename)
+    #tr.insert_from_list(lista)
     #print(tr.print_list())
     print(tr.search("romano"))
     print(tr.delete("humor"))
