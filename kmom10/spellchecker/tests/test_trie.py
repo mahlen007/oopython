@@ -39,7 +39,7 @@ class TestUnorderlist(unittest.TestCase):
         #lista=['hoe','house','horse','name','man','hot','apply','riddle','banana','home']
         filename="tiny_frequency.txt"
         tr.create_from_file(filename)
-        
+
         #lista=tr.read_from_file("tiny_frequency.txt")
         #tr.insert_from_list(lista)
         with self.assertRaises(SearchMiss):# Assert

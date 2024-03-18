@@ -6,10 +6,13 @@ Class for Trie
 from src.node import Node
 from src.errors import SearchMiss
 
-class Trie():
+class Trie:
     """ Class Trie """
     def __init__(self):
-        self.root=Node()
+        self.root=Node() #self.getNode()
+
+    #def getNode(self):
+    #    return Node()
 
     #def getNode():
     #    """ print method """
@@ -60,7 +63,6 @@ class Trie():
                 return False
         return True
 
-    
     def insert_from_list(self,list_word):
         """ read from a list and insert """
         for word in list_word:
@@ -70,7 +72,7 @@ class Trie():
     def create_from_file(cls,fname="frequency.txt"):
         """ read from file """
         list_word=[]
-        
+
         with open(fname, 'r', encoding='utf-8') as openfile:
             # Reading from json file
             #json_object = json.load(openfile)
@@ -80,7 +82,7 @@ class Trie():
         #cls.insert_from_list(list_word)
         for word in list_word:
             cls().add_word(word)
-        #return cls
+        return cls()
         #return list_
 
 
@@ -136,23 +138,22 @@ class Trie():
                         str_=str_[:-1]
             index+=1
 
-    @classmethod
-    def prefix_search(cls,prefix):
+    def prefix_search(self,prefix):
         """ prefix search """
         prefix=prefix.lower()
         visited=[]
         str_=''
-        node=cls().root
+        node=self.root
         for letter in prefix:
             if node.children[ord(letter)-ord('a')] is None:
                 return []
             node=node.children[ord(letter)-ord('a')]
-        visited=cls()._prefix_search(visited,node,str_,prefix)
+        visited=self._prefix_search(visited,node,str_,prefix)
         #print("Content of Trie:")
         pr_sort=[]
-        prefix_sorted=cls().sort_prefix(visited)
-        if cls().search(prefix):
+        if self.search(prefix):
             visited.append((prefix,node.freq))
+        prefix_sorted=self.sort_prefix(visited)
         if len(prefix_sorted)<=10:
             return prefix_sorted
         for x in range(10):
@@ -194,43 +195,43 @@ class Trie():
                     my_list[j + 1] = temp
         return my_list
 
-    def correct_spelling(self,word):
-        """ check spelling """
-        word=word.lower()
-        node=self.root
-        one_right=True
-        try:
-            if self.search(word):
-                return word
-        except SearchMiss:
-            pass
-        for letter in word:
-            if node.children[ord(letter)-ord('a')] is None:
-                return []
-            if letter==node.children[ord(letter)-ord('a')]:
-                one_right=True
-        visited=self._prefix_search(visited,node,str_,prefix)
+    # def correct_spelling(self,word):
+    #     """ check spelling """
+    #     word=word.lower()
+    #     node=self.root
+    #     one_right=True
+    #     try:
+    #         if self.search(word):
+    #             return word
+    #     except SearchMiss:
+    #         pass
+    #     for letter in word:
+    #         if node.children[ord(letter)-ord('a')] is None:
+    #             return []
+    #         if letter==node.children[ord(letter)-ord('a')]:
+    #             one_right=True
+    #     visited=self._prefix_search(visited,node,str_,prefix)
 
-    def _correct_spelling(self,visited,node,str_,prefix):
-        """ check spelling """
-        index=0
-        while index<26:
-            if node.children[index]:
-                str_+=node.children[index].data
-                #str+=chr(ord('a')+index)
-                #print(2,str)
-                if node.children[index].is_end_of_word == False:
-                    self._prefix_search(visited,node.children[index],str_,prefix)
-                    str_=str_[:-1]
-                else:
-                    if str_ not in visited:
-                        #print(node.children[index].freq)
-                        visited.append((prefix+str_,node.children[index].freq))
-                    if self.has_child(node.children[index]):
-                        self._prefix_search(visited,node.children[index],str_,prefix)
-                        str_=str_[:-1]
-            index+=1
-        return visited
+    # def _correct_spelling(self,visited,node,str_,prefix):
+    #     """ check spelling """
+    #     index=0
+    #     while index<26:
+    #         if node.children[index]:
+    #             str_+=node.children[index].data
+    #             #str+=chr(ord('a')+index)
+    #             #print(2,str)
+    #             if node.children[index].is_end_of_word == False:
+    #                 self._prefix_search(visited,node.children[index],str_,prefix)
+    #                 str_=str_[:-1]
+    #             else:
+    #                 if str_ not in visited:
+    #                     #print(node.children[index].freq)
+    #                     visited.append((prefix+str_,node.children[index].freq))
+    #                 if self.has_child(node.children[index]):
+    #                     self._prefix_search(visited,node.children[index],str_,prefix)
+    #                     str_=str_[:-1]
+    #         index+=1
+    #     return visited
 
     def delete(self, word):
         """ delete word """
@@ -257,17 +258,21 @@ class Trie():
         return False
 
 if __name__ == "__main__":
-    #tr=Trie()
+    #trie=Trie()
     #root = getNode()
     #tr.insert_from_list(lista)
-    filename='../tiny_frequency.txt'
-    tr=Trie.create_from_file(filename)
+    #filename='../tiny_frequency.txt'
+    #tr=Trie.create_from_file(filename)
+    trie=Trie.create_from_file()
+    print(type(trie))
+    respons = trie.prefix_search("mos")
+    print(respons)
     #tr.insert_from_list(lista)
     #print(tr.print_list())
-    print(tr.search("romano"))
-    print(tr.delete("humor"))
-    print(tr.delete("humor"))
-    print(tr.print_list())
+    #print(tr.search("romano"))
+    #print(tr.delete("humor"))
+    #print(tr.delete("humor"))
+    #print(tr.print_list())
     #print(tr.starts_with('ma'))
     #print(tr.autocomplete('ma'))
     #print(tr.prefix_search('H'))
