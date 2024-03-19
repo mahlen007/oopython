@@ -2,23 +2,13 @@
 """
 Class for Trie
 """
-#import re
-from node import Node
-from errors import SearchMiss
+from src.node import Node
+from src.errors import SearchMiss
 
 class Trie:
     """ Class Trie """
     def __init__(self):
         self.root=Node() #self.getNode()
-
-    #def getNode(self):
-    #    return Node()
-
-    #def getNode():
-    #    """ print method """
-    #    pNode = TrieNode()
-    #    pNode.is_end_of_word = False
-    #    return pNode
 
     def has_child(self,node):
         """ has children """
@@ -37,7 +27,6 @@ class Trie:
             index=ord(letter)-ord('a')
             if not current.children[index]:
                 current.children[index]=Node(letter)
-                #current.data=letter
             current=current.children[index]
             current.data=letter
         current.freq=freq
@@ -47,7 +36,6 @@ class Trie:
         """ Search for a word in the trie """
         word=word.lower()
         current=self.root
-
         for letter in word:
             index=ord(letter)-ord('a')
             if not current.children[index]:
@@ -57,7 +45,7 @@ class Trie:
 
 
     def is_empty(self,node):
-        """ is children empty """
+        """ check if is children empty """
         for i in range(26):
             if node.children[i]:
                 return False
@@ -69,40 +57,20 @@ class Trie:
             self.add_word(word)
 
     @classmethod
-    def create_from_file(cls,fname="../frequency.txt"):
+    def create_from_file(cls,fname="frequency.txt"):
         """ read from file """
-        cls=Trie()
+        trie=Trie()
         list_word=[]
-
         with open(fname, 'r', encoding='utf-8') as openfile:
-            # Reading from json file
-            #json_object = json.load(openfile)
             for line in openfile:
                 list_word.append(line.strip())
         openfile.close()
-        #cls.insert_from_list(list_word)
         for word in list_word:
-            #print(cls().print_list())
-            cls.add_word(word)
-        return cls
-        #return list_
-
-
-    def get(self,index):
-        """ get method """
-
-
-    def set(self,index,data):
-        """ set method """
-
-    def index_of(self, data):
-        """ index of method """
-
-    def remove(self, data):
-        """ remove method """
+            trie.add_word(word)
+        return trie
 
     def word_count(self,node):
-        """ size method """
+        """ count the words """
         result=0
         if node.is_end_of_word is True:
             result += 1
@@ -121,65 +89,18 @@ class Trie:
         #for i in range(len(visited)):
         #    print(visited[i])
 
-    def _print_list(self,visited,node,str_):
-        """ print method """
-        index=0
-        while index<26:
+    def _print_list(self, visited, node, str_):
+        """ Helper method to print list of words """
+        index = 0
+        while index < 26:
             if node.children[index]:
-                #str+=chr(ord('a')+index)
-                str_+=node.children[index].data
-                #print(2,str)
-                if node.children[index].is_end_of_word is False:
-                    self._print_list(visited,node.children[index],str_)
-                    str_=str_[:-1]
-                    #str_=str_[0:len(str_)-1]
-                else:
-                    if str_ not in visited:
-                        visited.append(str_)
-                    if self.has_child(node.children[index]):
-                        self._print_list(visited,node.children[index],str_)
-                        #str_=str_[0:len(str_)-1]
-                        str_=str_[:-1]
-            index+=1
-
-    def prefix_search2(self,prefix):
-        """ prefix search """
-        prefix=prefix.lower()
-        visited=[]
-        str_=''
-        node=self.root
-        for letter in prefix:
-            if node.children[ord(letter)-ord('a')] is None:
-                return []
-            node=node.children[ord(letter)-ord('a')]
-        visited=self._prefix_search(visited,node,str_,prefix)
-        if self.search(prefix):
-            visited.append((prefix,node.freq))
-        return visited
-
-    def _prefix_search2(self,visited,node,str_,prefix):
-        """ prefix search """
-        index=0
-        while index<26:
-            if node.children[index]:
-                str_+=node.children[index].data
-                if node.children[index].is_end_of_word is False:
-                    self._prefix_search(visited,node.children[index],str_,prefix)
-                    #print(str_)
-                    str_=str_[:-1]
-                else:
-                    if str_ not in visited:
-                        #print(node.children[index].freq)
-                        
-                        visited.append((prefix+str_,node.children[index].freq))
-                        #str_=str_[:-1]
-                    if self.has_child(node.children[index]):
-                        self._prefix_search(visited,node.children[index],str_,prefix)
-                        str_=str_[:-1]
-            index+=1
-        return visited
-
-
+                str_ += node.children[index].data
+                if node.children[index].is_end_of_word:
+                    visited.append(str_)
+                if self.has_child(node.children[index]):
+                    self._print_list(visited, node.children[index], str_)
+                str_ = str_[:-1]
+            index += 1
 
     def prefix_search(self,prefix):
         """ prefix search """
@@ -192,45 +113,30 @@ class Trie:
                 return []
             node=node.children[ord(letter)-ord('a')]
         visited=self._prefix_search(visited,node,str_,prefix)
-        #print("Content of Trie:")
-        #print(visited)
         pr_sort=[]
         if self.search(prefix):
             visited.append((prefix,node.freq))
         prefix_sorted=self.sort_prefix(visited)
-        if len(prefix_sorted)<=20:
+        if len(prefix_sorted)<=10:
             return prefix_sorted
-        for x in range(20):
+        for x in range(10):
             pr_sort.append(prefix_sorted[x])
-        return prefix_sorted
+        return pr_sort
 
-        #for i in range(len(visited)):
-        #    print(visited[i])
-
-    def _prefix_search(self,visited,node,str_,prefix):
-        """ prefix search """
-        index=0
-        #print(str_)
-        while index<26:
+    def _prefix_search(self, visited, node, str_,prefix):
+        """ Helper method to print list of words """
+        index = 0
+        while index < 26:
             if node.children[index]:
-                str_+=node.children[index].data
-                #str+=chr(ord('a')+index)
-                #print(2,str)
-                if node.children[index].is_end_of_word is False:
+                str_ += node.children[index].data
+                if node.children[index].is_end_of_word:
+                    visited.append((prefix+str_,node.children[index].freq))
+                if self.has_child(node.children[index]):
                     self._prefix_search(visited,node.children[index],str_,prefix)
-                    #print(str_)
-                    str_=str_[:-1]
-                else:
-                    if str_ not in visited:
-                        #print(node.children[index].freq)
-                        
-                        visited.append((prefix+str_,node.children[index].freq))
-                        str_=str_[:-1]
-                    if self.has_child(node.children[index]):
-                        self._prefix_search(visited,node.children[index],str_,prefix)
-                        #str_=str_[:-1]
-            index+=1
+                str_ = str_[:-1]
+            index += 1
         return visited
+
 
     def sort_prefix(self,my_list):
         """ sort prefix list """
@@ -243,6 +149,130 @@ class Trie:
                     my_list[j + 1] = temp
         return my_list
 
+    def delete(self, word):
+        """ delete word """
+        word=word.lower()
+        return self._delete(self.root, word, 0)
+
+    def _delete(self, curr, word, index):
+        """ delete word helper method """
+        if index == len(word):
+            if not curr.is_end_of_word:
+                return False
+            curr.is_end_of_word = False
+            return len(curr.children) == 0
+        ch = word[index]
+        if curr.children[ord(ch)-ord('a')] is None:
+            return False
+        child = curr.children[ord(ch)-ord('a')]
+        should_delete_child = self._delete(child, word, index + 1)
+        if should_delete_child:
+            del curr.children[ord(ch)-ord('a')]
+            return len(curr.children) == 0
+        return False
+
+if __name__ == "__main__":
+    #trie=Trie()
+    #root = getNode()
+    #tr.insert_from_list(lista)
+    #filename='../tiny_frequency.txt'
+    #tr=Trie.create_from_file(filename)
+    #trie=Trie.create_from_file("../tiny_egen.txt")
+    tr=Trie.create_from_file()
+    #print(type(trie))
+    respons = tr.prefix_search("mos")
+    print(respons)
+    #tr.insert_from_list(lista)
+    #print(trie.print_list())
+    #print(tr.search("romano"))
+    #print(tr.delete("humor"))
+    #print(tr.delete("humor"))
+    #print(trie.print_list())
+    #print(tr.starts_with('ma'))
+    #print(tr.autocomplete('ma'))
+    #print(tr.prefix_search('H'))
+    #print(tr.word_count(tr.root))
+
+    # def _print_list(self,visited,node,str_):
+    #     """ print method """
+    #     index=0
+    #     while index<26:
+    #         if node.children[index]:
+    #             #str+=chr(ord('a')+index)
+    #             str_+=node.children[index].data
+    #             #print(2,str)
+    #             if node.children[index].is_end_of_word is False:
+    #                 self._print_list(visited,node.children[index],str_)
+    #                 str_=str_[:-1]
+    #                 #str_=str_[0:len(str_)-1]
+    #             else:
+    #                 if str_ not in visited:
+    #                     visited.append(str_)
+    #                 if self.has_child(node.children[index]):
+    #                     self._print_list(visited,node.children[index],str_)
+    #                     #str_=str_[0:len(str_)-1]
+    #                     str_=str_[:-1]
+    #         index+=1
+
+    # def _prefix_search2(self,visited,node,str_,prefix):
+    #     """ prefix search """
+    #     index=0
+    #     while index<26:
+    #         if node.children[index]:
+    #             str_+=node.children[index].data
+    #             if node.children[index].is_end_of_word is False:
+    #                 self._prefix_search(visited,node.children[index],str_,prefix)
+    #                 #print(str_)
+    #                 str_=str_[:-1]
+    #             else:
+    #                 if str_ not in visited:
+    #                     #print(node.children[index].freq)
+    #                     visited.append((prefix+str_,node.children[index].freq))
+    #                     #str_=str_[:-1]
+    #                 if self.has_child(node.children[index]):
+    #                     self._prefix_search(visited,node.children[index],str_,prefix)
+    #                     str_=str_[:-1]
+    #         index+=1
+    #     return visited
+
+    # def _prefix_search(self,visited,node,str_,prefix):
+    #     """ prefix search """
+    #     index=0
+    #     #print(str_)
+    #     while index<26:
+    #         if node.children[index]:
+    #             str_+=node.children[index].data
+    #             #str+=chr(ord('a')+index)
+    #             #print(2,str)
+    #             if node.children[index].is_end_of_word is False:
+    #                 self._prefix_search(visited,node.children[index],str_,prefix)
+    #                 #print(str_)
+    #                 str_=str_[:-1]
+    #             else:
+    #                 if str_ not in visited:
+    #                     #print(node.children[index].freq)
+    #                     visited.append((prefix+str_,node.children[index].freq))
+    #                     str_=str_[:-1]
+    #                 if self.has_child(node.children[index]):
+    #                     self._prefix_search(visited,node.children[index],str_,prefix)
+    #                     #str_=str_[:-1]
+    #         index+=1
+    #     return visited
+
+    # def prefix_search2(self,prefix):
+    #     """ prefix search """
+    #     prefix=prefix.lower()
+    #     visited=[]
+    #     str_=''
+    #     node=self.root
+    #     for letter in prefix:
+    #         if node.children[ord(letter)-ord('a')] is None:
+    #             return []
+    #         node=node.children[ord(letter)-ord('a')]
+    #     visited=self._prefix_search(visited,node,str_,prefix)
+    #     if self.search(prefix):
+    #         visited.append((prefix,node.freq))
+    #     return visited
     # def correct_spelling(self,word):
     #     """ check spelling """
     #     word=word.lower()
@@ -280,49 +310,3 @@ class Trie:
     #                     str_=str_[:-1]
     #         index+=1
     #     return visited
-
-    def delete(self, word):
-        """ delete word """
-        #word=word[0]
-        word=word.lower()
-        #print(word)
-        return self._delete(self.root, word, 0)
-
-    def _delete(self, curr, word, index):
-        """ delete word """
-        if index == len(word):
-            if not curr.is_end_of_word:
-                return False
-            curr.is_end_of_word = False
-            return len(curr.children) == 0
-        ch = word[index]
-        if curr.children[ord(ch)-ord('a')] is None:
-            return False
-        child = curr.children[ord(ch)-ord('a')]
-        should_delete_child = self._delete(child, word, index + 1)
-        if should_delete_child:
-            del curr.children[ord(ch)-ord('a')]
-            return len(curr.children) == 0
-        return False
-
-if __name__ == "__main__":
-    #trie=Trie()
-    #root = getNode()
-    #tr.insert_from_list(lista)
-    #filename='../tiny_frequency.txt'
-    #tr=Trie.create_from_file(filename)
-    trie=Trie.create_from_file("../tiny_egen.txt")
-    #trie=Trie.create_from_file()
-    #print(type(trie))
-    #respons = trie.prefix_search2("mos")
-    #print(respons)
-    #tr.insert_from_list(lista)
-    print(trie.print_list())
-    #print(tr.search("romano"))
-    #print(tr.delete("humor"))
-    #print(tr.delete("humor"))
-    #print(trie.print_list())
-    #print(tr.starts_with('ma'))
-    #print(tr.autocomplete('ma'))
-    #print(tr.prefix_search('H'))
-    #print(tr.word_count(tr.root))

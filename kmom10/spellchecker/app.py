@@ -32,7 +32,7 @@ def check():
 @app.route("/check_spelling",methods=["POST"])
 def check_spelling():
     """ Route for check spelling """
-    tr=Trie()
+    #tr=Trie()
     word=request.form.get("word")
     #if session["filename"]=='':
     filename=session["filename"]
@@ -41,7 +41,8 @@ def check_spelling():
     removed_words=json.loads(session['removed_words']).split(' ')
     ##word_list=tr.create_from_file(filename)
     #tr.insert_from_list(word_list)
-    tr.create_from_file(filename)
+    #tr.create_from_file(filename)
+    tr=Trie.create_from_file(filename)
     try:
         session['spelling_result']=tr.search(word)
     except SearchMiss:
@@ -66,7 +67,7 @@ def prefix():
 @app.route("/check_prefix",methods=["POST"])
 def check_prefix():
     """ Route for check prefix """
-    tr=Trie()
+    #tr=Trie()
     word=request.form.get("word")
     #if session["filename"]=='':
     filename=session["filename"]
@@ -75,7 +76,7 @@ def check_prefix():
     removed_words=json.loads(session['removed_words']).split(' ')
     #word_list=tr.read_from_file(filename)
     #tr.insert_from_list(word_list)
-    tr.create_from_file(filename)
+    tr=Trie.create_from_file(filename)
     session['prefix_list']=tr.prefix_search(word)
     #session['spelling_result']=tr.search(word)
     if word in removed_words:
@@ -91,13 +92,13 @@ def check_prefix():
 @app.route("/list")#,methods=["POST"])
 def list_words():
     """ Route for list the words """
-    tr=Trie()
+    #tr=Trie()
     ch='a'
     #if session["filename"]=='':
     filename=session["filename"]
     #else:
     #    filename="tiny_dictionary.txt"
-    tr.create_from_file(filename)
+    tr=Trie.create_from_file(filename)
     #word_list=tr.read_from_file(filename)
     #tr.insert_from_list(word_list)
     removed_words=json.loads(session['removed_words']).split(' ')
@@ -131,7 +132,7 @@ def remove():
 @app.route("/remove_word",methods=["POST"])
 def remove_word():
     """ Route for add result to Leaderboard """
-    tr=Trie()
+    #tr=Trie()
     removed_words=[]
     word=request.form.get("remove_word")
     print(word)
@@ -141,7 +142,7 @@ def remove_word():
     #    filename="tiny_dictionary.txt"
     #word_list=tr.read_from_file(filename)
     #tr.insert_from_list(word_list)
-    tr.create_from_file(filename)
+    tr=Trie.create_from_file(filename)
     sp_result=tr.search(word)
     session['spelling_result']=sp_result
     removed_words=json.loads(session['removed_words']).split(' ')
