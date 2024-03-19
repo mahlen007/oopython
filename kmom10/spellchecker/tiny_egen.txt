@@ -1,0 +1,7 @@
+mosaic 40
+mosque 60
+mosquito 100
+moss 10
+mostly 50
+most 110
+mosquitoes 20

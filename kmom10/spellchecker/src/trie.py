@@ -3,8 +3,8 @@
 Class for Trie
 """
 #import re
-from src.node import Node
-from src.errors import SearchMiss
+from node import Node
+from errors import SearchMiss
 
 class Trie:
     """ Class Trie """
@@ -69,8 +69,9 @@ class Trie:
             self.add_word(word)
 
     @classmethod
-    def create_from_file(cls,fname="frequency.txt"):
+    def create_from_file(cls,fname="../frequency.txt"):
         """ read from file """
+        cls=Trie()
         list_word=[]
 
         with open(fname, 'r', encoding='utf-8') as openfile:
@@ -81,8 +82,9 @@ class Trie:
         openfile.close()
         #cls.insert_from_list(list_word)
         for word in list_word:
-            cls().add_word(word)
-        return cls()
+            #print(cls().print_list())
+            cls.add_word(word)
+        return cls
         #return list_
 
 
@@ -130,13 +132,54 @@ class Trie:
                 if node.children[index].is_end_of_word is False:
                     self._print_list(visited,node.children[index],str_)
                     str_=str_[:-1]
+                    #str_=str_[0:len(str_)-1]
                 else:
                     if str_ not in visited:
                         visited.append(str_)
                     if self.has_child(node.children[index]):
                         self._print_list(visited,node.children[index],str_)
+                        #str_=str_[0:len(str_)-1]
                         str_=str_[:-1]
             index+=1
+
+    def prefix_search2(self,prefix):
+        """ prefix search """
+        prefix=prefix.lower()
+        visited=[]
+        str_=''
+        node=self.root
+        for letter in prefix:
+            if node.children[ord(letter)-ord('a')] is None:
+                return []
+            node=node.children[ord(letter)-ord('a')]
+        visited=self._prefix_search(visited,node,str_,prefix)
+        if self.search(prefix):
+            visited.append((prefix,node.freq))
+        return visited
+
+    def _prefix_search2(self,visited,node,str_,prefix):
+        """ prefix search """
+        index=0
+        while index<26:
+            if node.children[index]:
+                str_+=node.children[index].data
+                if node.children[index].is_end_of_word is False:
+                    self._prefix_search(visited,node.children[index],str_,prefix)
+                    #print(str_)
+                    str_=str_[:-1]
+                else:
+                    if str_ not in visited:
+                        #print(node.children[index].freq)
+                        
+                        visited.append((prefix+str_,node.children[index].freq))
+                        #str_=str_[:-1]
+                    if self.has_child(node.children[index]):
+                        self._prefix_search(visited,node.children[index],str_,prefix)
+                        str_=str_[:-1]
+            index+=1
+        return visited
+
+
 
     def prefix_search(self,prefix):
         """ prefix search """
@@ -150,15 +193,16 @@ class Trie:
             node=node.children[ord(letter)-ord('a')]
         visited=self._prefix_search(visited,node,str_,prefix)
         #print("Content of Trie:")
+        #print(visited)
         pr_sort=[]
         if self.search(prefix):
             visited.append((prefix,node.freq))
         prefix_sorted=self.sort_prefix(visited)
-        if len(prefix_sorted)<=10:
+        if len(prefix_sorted)<=20:
             return prefix_sorted
-        for x in range(10):
+        for x in range(20):
             pr_sort.append(prefix_sorted[x])
-        return pr_sort
+        return prefix_sorted
 
         #for i in range(len(visited)):
         #    print(visited[i])
@@ -166,6 +210,7 @@ class Trie:
     def _prefix_search(self,visited,node,str_,prefix):
         """ prefix search """
         index=0
+        #print(str_)
         while index<26:
             if node.children[index]:
                 str_+=node.children[index].data
@@ -173,14 +218,17 @@ class Trie:
                 #print(2,str)
                 if node.children[index].is_end_of_word is False:
                     self._prefix_search(visited,node.children[index],str_,prefix)
+                    #print(str_)
                     str_=str_[:-1]
                 else:
                     if str_ not in visited:
                         #print(node.children[index].freq)
+                        
                         visited.append((prefix+str_,node.children[index].freq))
+                        str_=str_[:-1]
                     if self.has_child(node.children[index]):
                         self._prefix_search(visited,node.children[index],str_,prefix)
-                        str_=str_[:-1]
+                        #str_=str_[:-1]
             index+=1
         return visited
 
@@ -263,16 +311,17 @@ if __name__ == "__main__":
     #tr.insert_from_list(lista)
     #filename='../tiny_frequency.txt'
     #tr=Trie.create_from_file(filename)
-    trie=Trie.create_from_file()
-    print(type(trie))
-    respons = trie.prefix_search("mos")
-    print(respons)
+    trie=Trie.create_from_file("../tiny_egen.txt")
+    #trie=Trie.create_from_file()
+    #print(type(trie))
+    #respons = trie.prefix_search2("mos")
+    #print(respons)
     #tr.insert_from_list(lista)
-    #print(tr.print_list())
+    print(trie.print_list())
     #print(tr.search("romano"))
     #print(tr.delete("humor"))
     #print(tr.delete("humor"))
-    #print(tr.print_list())
+    #print(trie.print_list())
     #print(tr.starts_with('ma'))
     #print(tr.autocomplete('ma'))
     #print(tr.prefix_search('H'))
