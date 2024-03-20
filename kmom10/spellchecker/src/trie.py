@@ -174,22 +174,6 @@ class Trie:
             return len(curr.children) == 0
         return False
 
-    def correct_spelling(self,word):
-        """ check spelling """
-        word=word.lower()
-        node=self.root
-        one_right=True
-        try:
-            if self.search(word):
-                return word
-        except SearchMiss:
-            pass
-        for letter in word:
-            if node.children[ord(letter)-ord('a')] is None:
-                return []
-            if letter==node.children[ord(letter)-ord('a')]:
-                one_right=True
-        visited=self._prefix_search(visited,node,str_,prefix)
 
 
 
@@ -254,3 +238,19 @@ if __name__ == "__main__":
     #                     str_=str_[:-1]
     #         index+=1
     #     return visited
+    # def correct_spelling(self,word):
+    #     """ check spelling """
+    #     word=word.lower()
+    #     node=self.root
+    #     one_right=True
+    #     try:
+    #         if self.search(word):
+    #             return word
+    #     except SearchMiss:
+    #         pass
+    #     for letter in word:
+    #         if node.children[ord(letter)-ord('a')] is None:
+    #             return []
+    #         if letter==node.children[ord(letter)-ord('a')]:
+    #             one_right=True
+    #     visited=self._prefix_search(visited,node,str_,prefix)

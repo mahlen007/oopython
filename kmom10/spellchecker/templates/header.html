@@ -33,8 +33,6 @@
                     <li {%- if request.path == "/list" %} class="active" {% endif %}><a href="{{ url_for('list_words') }}">List words</a></li>
                     <li {%- if request.path == "/remove" %} class="active" {% endif %}><a href="{{ url_for('remove') }}">Remove word</a></li>
                     <li {%- if request.path == "/prefix" %} class="active" {% endif %}><a href="{{ url_for('prefix') }}">Prefix search</a></li>
-                    <li {%- if request.path == "/about" %} class="active" {% endif %}><a href="{{ url_for('about') }}">Correct spelling</a></li>
-                    <li {%- if request.path == "/about" %} class="active" {% endif %}><a href="{{ url_for('about') }}">Suffix search</a></li>
                     <li {%- if request.path == "/change" %} class="active" {% endif %}><a href="{{ url_for('change') }}">Change dictionary</a></li>
                     <li {%- if request.path == "/reset" %} class="active" {% endif %}><a href="{{ url_for('reset') }}">Reset words and file</a></li>
 

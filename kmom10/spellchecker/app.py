@@ -21,27 +21,24 @@ def main():
     reset_session()
     return render_template("index.html")
 
-@app.route("/check")#,methods=["POST"])
+@app.route("/check")
 def check():
     """ Route for check spelling """
-    spelling_result=session['spelling_result']
-    word=session['word']
+    if session['from_check_spelling']:
+        spelling_result=session['spelling_result']
+        word=session['word']
+        session['from_check_spelling']=False
+    else:
+        spelling_result=''
+        word=''
     return render_template("check.html",spelling_result=spelling_result,word=word)
-    #return render_template("add_result.html")
 
 @app.route("/check_spelling",methods=["POST"])
 def check_spelling():
     """ Route for check spelling """
-    #tr=Trie()
     word=request.form.get("word")
-    #if session["filename"]=='':
     filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
     removed_words=json.loads(session['removed_words']).split(' ')
-    ##word_list=tr.create_from_file(filename)
-    #tr.insert_from_list(word_list)
-    #tr.create_from_file(filename)
     tr=Trie.create_from_file(filename)
     try:
         session['spelling_result']=tr.search(word)
@@ -49,155 +46,111 @@ def check_spelling():
         session['spelling_result']=False
     if word in removed_words:
         session['spelling_result']=False
-
-    #print(tr.search(word))
     session['word']=word
-    #session["trie"]=tr
+    session['from_check_spelling']=True
     return redirect(url_for('check'))
-    #return render_template("leaderboard.html",lb=lb1)
 
-@app.route("/prefix")#,methods=["POST"])
+@app.route("/prefix")
 def prefix():
     """ Route for prefix search """
-    prefix_result=session['prefix_result']
-    pre_l=session['prefix_list']
-    word=session['word']
-    backg='.bg-danger'
-    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=pre_l,backg=backg)
+    if session['from_check_prefix']:
+        prefix_result=session['prefix_result']
+        pre_l=session['prefix_list']
+        word=session['word']
+        session['from_check_prefix']=False
+    else:
+        prefix_result=''
+        pre_l=[]
+        word=''
+    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=pre_l)
 
 @app.route("/check_prefix",methods=["POST"])
 def check_prefix():
     """ Route for check prefix """
-    #tr=Trie()
     word=request.form.get("word")
-    #if session["filename"]=='':
     filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
     removed_words=json.loads(session['removed_words']).split(' ')
-    #word_list=tr.read_from_file(filename)
-    #tr.insert_from_list(word_list)
     tr=Trie.create_from_file(filename)
     session['prefix_list']=tr.prefix_search(word)
-    #session['spelling_result']=tr.search(word)
     if word in removed_words:
         session['spelling_result']=False
-
-    #print(tr.search(word))
     session['word']=word
-    #session["trie"]=tr
+    session['from_check_prefix']=True
     return redirect(url_for('prefix'))
-    #return render_template("leaderboard.html",lb=lb1)
 
 
-@app.route("/list")#,methods=["POST"])
+@app.route("/list")
 def list_words():
     """ Route for list the words """
-    #tr=Trie()
     ch='a'
-    #if session["filename"]=='':
     filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
     tr=Trie.create_from_file(filename)
-    #word_list=tr.read_from_file(filename)
-    #tr.insert_from_list(word_list)
     removed_words=json.loads(session['removed_words']).split(' ')
     nr_rem=len(removed_words)-1
     return render_template("list.html",trie=tr,letter=ch,removed_w=removed_words,no_removed=nr_rem)
-    #return render_template("add_result.html",sb=sb1)
 
-@app.route("/remove")#,methods=["POST"])
+@app.route("/remove")
 def remove():
     """ Route for remove word """
-    #tr=Trie()
-    #word=request.form.get("word")
-    #if session["filename"]=='':
-    #filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
     removed_w=json.loads(session['removed_words']).split(' ')
-    #word_list=tr.read_from_file(filename)
-    #tr.insert_from_list(word_list)
-    #session['spelling_result']=tr.search(word)
     word=session['r_word']
     session['r_word']=''
-    #if word in removed_words:
-    #    session['spelling_result']=False
-    #word=request.form.get("word")
     s_result=session['spelling_result']
-    print(s_result)
     return render_template("remove.html",spelling_result=s_result,word=word,removed_words=removed_w)
-    #return render_template("add_result.html",sb=sb1)
 
 @app.route("/remove_word",methods=["POST"])
 def remove_word():
     """ Route for add result to Leaderboard """
-    #tr=Trie()
     removed_words=[]
     word=request.form.get("remove_word")
     print(word)
-    #if session["filename"]=='':
     filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
-    #word_list=tr.read_from_file(filename)
-    #tr.insert_from_list(word_list)
     tr=Trie.create_from_file(filename)
     sp_result=tr.search(word)
     session['spelling_result']=sp_result
     removed_words=json.loads(session['removed_words']).split(' ')
     if word in removed_words:
         session['spelling_result']=False
-    #print(sp_result)
-    #print(tr.search(word))
-    #session['word']=word
     if sp_result is True:
         removed_words=json.loads(session['removed_words']).split(' ')
         if word not in removed_words:
             tr.delete(word)
             removed_words.append(word)
         session['removed_words']=json.dumps(' '.join(removed_words))
-        #print(removed_words)
     session['r_word']=word
     return redirect(url_for('remove'))
-    #return render_template("leaderboard.html",lb=lb1)
 
-@app.route("/change")#,methods=["POST"])
+@app.route("/change")
 def change():
     """ Change dictionary """
-    #if session["filename"]=='':
     filename=session["filename"]
-    #else:
-    #    filename="tiny_dictionary.txt"
     return render_template("change.html",filename=filename)
-    #return render_template("add_result.html",sb=sb1)
 
 @app.route("/change_dictionary",methods=["POST"])
 def change_dictionary():
-    """ Route for add result to Leaderboard """
+    """ Route for change dictionary """
     _ = [session.pop(key) for key in list(session.keys())]
     reset_session()
-    #session['spelling_result']=''
-    #session['filename']="tiny_dictionary.txt"
-    #session['word']=''
-    #session['r_word']=''
-    #session['removed_words']=json.dumps('')
     filename=request.form.get("word_list")
     session['filename']=filename
-
     return redirect(url_for('change'))
-    #return render_template("leaderboard.html",lb=lb1)
+
+@app.route("/redovisning")
+def redovisning():
+    """ Route for Redovisning """
+    return render_template("redovisning.html")
+
 
 def reset_session():
     """ Reset session """
     session['spelling_result']=''
-    session['filename']="tiny_frequency.txt"
+    session['filename']="frequency.txt"
     session['word']=''
     session['r_word']=''
     session['prefix_result']=''
     session['prefix_list']=''
-    #session['removed_words']='test'
+    session['from_check_spelling']=False
+    session['from_check_prefix']=False
     session['removed_words']=json.dumps('')
 
 
