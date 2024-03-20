@@ -5,8 +5,8 @@
         <div class="w-100">
             <form role="form" method="POST" action="{{url_for('check_prefix')}}">
             <fieldset>
-            <table class="table_ex"><tr><td colspan="5" class="td_bg"><h3>Prefix search</h3></td></tr>
-                <tr><td colspan="5" class="td_bg"><h3>
+            <table class="table_ex"><tr><td colspan="5" class="td_bg {{backg}}"><h3>Prefix search</h3></td></tr>
+                <tr><td colspan="5" class="td_bg" ><h3>
                     {% if word!='' %}
                     
                     {% if prefix_list==[]:%}
@@ -28,7 +28,7 @@
                             {% set letter = word[0] %}
                             
                             {% endif %}
-                            <td>
+                            <td colspan="5">
                             {% if word is not in removed_w%}
                                 {{word[0]}}
                             {% endif %}

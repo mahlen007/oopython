@@ -62,7 +62,8 @@ def prefix():
     prefix_result=session['prefix_result']
     pre_l=session['prefix_list']
     word=session['word']
-    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=pre_l)
+    backg='.bg-danger'
+    return render_template("prefix.html",prefix_result=prefix_result,word=word,prefix_list=pre_l,backg=backg)
 
 @app.route("/check_prefix",methods=["POST"])
 def check_prefix():
